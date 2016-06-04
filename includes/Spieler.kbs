@@ -1,0 +1,9 @@
+function Spieler_IndexFuerKey(a)
+	result = -1
+	for spi = 0 to Spieler_Anzahl - 1
+		if Spieler_GebotKey[spi] = a then
+			result = spi
+		endif
+	next spi
+	return result
+end function

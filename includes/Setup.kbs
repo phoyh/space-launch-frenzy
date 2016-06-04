@@ -1,0 +1,50 @@
+subroutine Spieler_Init_Dummy()
+	Spieler_Name$[Spieler_Anzahl] = "Max"
+	Spieler_Geld[Spieler_Anzahl] = SPIELER_STARTGELD
+	Spieler_GebotKey[Spieler_Anzahl] = 77
+	Spieler_Anzahl++
+	Spieler_Name$[Spieler_Anzahl] = "Philipp"
+	Spieler_Geld[Spieler_Anzahl] = SPIELER_STARTGELD
+	Spieler_GebotKey[Spieler_Anzahl] = 80
+	Spieler_Anzahl++
+end subroutine
+
+subroutine Spieler_Init()
+	istFertig = false
+	while Spieler_Anzahl < SPIELER_MAX_ANZAHL and not istFertig 
+		input "Name Spieler " + (Spieler_Anzahl + 1) + ": ", Spieler_Name$[Spieler_Anzahl]
+		if Spieler_Name$[Spieler_Anzahl] = "" then
+			istFertig = true
+		else
+			print "Gebotstaste druecken..."
+			while key <> 0
+			end while
+			a = key
+			while a = 0
+				a = key
+			end while
+			Spieler_GebotKey[Spieler_Anzahl] = a
+			Spieler_Geld[Spieler_Anzahl] = SPIELER_STARTGELD
+			Spieler_Anzahl++
+		endif
+	endwhile
+end subroutine
+
+subroutine Nachfrageart_Init()
+	Nachfrageart_Name$[Nachfrageart_Anzahl] = "LEO Satellit"
+	Nachfrageart_Anfangsgebot[Nachfrageart_Anzahl] = 140
+	Nachfrageart_Anfangskosten[Nachfrageart_Anzahl] = 200
+	Nachfrageart_Strafe[Nachfrageart_Anzahl] = 10
+	Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_Anzahl] = 5
+	Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_Anzahl] = 30
+	Nachfrageart_EffizienzLevel[Nachfrageart_Anzahl] = 10
+	Nachfrageart_Anzahl++
+	Nachfrageart_Name$[Nachfrageart_Anzahl] = "GEO Satellit"
+	Nachfrageart_Anfangsgebot[Nachfrageart_Anzahl] = 200
+	Nachfrageart_Anfangskosten[Nachfrageart_Anzahl] = 300
+	Nachfrageart_Strafe[Nachfrageart_Anzahl] = 15
+	Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_Anzahl] = 6
+	Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_Anzahl] = 60
+	Nachfrageart_EffizienzLevel[Nachfrageart_Anzahl] = 15
+	Nachfrageart_Anzahl++
+end subroutine

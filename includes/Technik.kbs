@@ -1,0 +1,8 @@
+function Technik_Prozent$(zahl)
+	return "" + int(10000 * zahl) / 100 + "%" 
+end function
+
+subroutine Technik_Echo(text$)
+	pause 2
+	print text$
+end subroutine

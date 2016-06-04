@@ -1,0 +1,40 @@
+global Spieler_Geld
+dim Spieler_Geld(SPIELER_MAX_ANZAHL)
+global Spieler_Anzahl
+Spieler_Anzahl = 0
+global Spieler_Name$
+dim Spieler_Name$(SPIELER_MAX_ANZAHL)
+global Spieler_GebotKey
+dim Spieler_GebotKey(SPIELER_MAX_ANZAHL)
+global Spieler_Zuverlaessigkeit
+dim Spieler_Zuverlaessigkeit(SPIELER_MAX_ANZAHL)
+global Spieler_Wiederverwendbarkeit
+dim Spieler_Wiederverwendbarkeit(SPIELER_MAX_ANZAHL)
+global Spieler_Effizienz
+dim Spieler_Effizienz(SPIELER_MAX_ANZAHL)
+
+global Nachfrageart_Anzahl
+Nachfrageart_Anzahl = 0
+global Nachfrageart_Name$
+dim Nachfrageart_Name$(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_Anfangsgebot
+dim Nachfrageart_Anfangsgebot(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_Anfangskosten
+dim Nachfrageart_Anfangskosten(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_Strafe
+dim Nachfrageart_Strafe(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_ZuverlaessigkeitLevel
+dim Nachfrageart_ZuverlaessigkeitLevel(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_WiederverwendbarkeitLevel
+dim Nachfrageart_WiederverwendbarkeitLevel(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_EffizienzLevel
+dim Nachfrageart_EffizienzLevel(NACHFRAGEART_MAX_ANZAHL)
+
+global Nachfrage_ArtIndex
+dim Nachfrage_ArtIndex(NACHFRAGE_MAX_ANZAHL)
+global Nachfrage_SpielerIndex
+dim Nachfrage_SpielerIndex(NACHFRAGE_MAX_ANZAHL)
+global Nachfrage_SiegGebot
+dim Nachfrage_SiegGebot(NACHFRAGE_MAX_ANZAHL)
+global Nachfrage_Anzahl
+Nachfrage_Anzahl = NACHFRAGE_MAX_ANZAHL
