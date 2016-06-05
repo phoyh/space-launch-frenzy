@@ -12,7 +12,7 @@ call Nachfrageart_Init()
 
 while true
 	call Interaktion_Nachfrage()
-	call Interaktion_Auftragdurchfuehrung()
+	call Interaktion_Auftragsdurchfuehrung()
 	call Interaktion_Technologie()
 	call Interaktion_Funding()
 endwhile

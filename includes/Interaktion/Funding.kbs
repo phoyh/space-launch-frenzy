@@ -1,0 +1,5 @@
+subroutine Interaktion_Funding()
+	for spi = 0 to Spieler_Anzahl - 1
+		Spieler_Geld[spi] += SPIELER_RUNDENGELD
+	next spi
+end subroutine

@@ -1,0 +1,36 @@
+subroutine Interaktion_Auftragsdurchfuehrung()
+	for ni = 0 to Nachfrage_Anzahl - 1
+		spi = Nachfrage_SpielerIndex[ni]
+		if spi <> -1 then
+			nai = Nachfrage_ArtIndex[ni]
+			zuverlaessigkeit = Modell_Zuverlaessigkeit(spi, nai)
+			wiederverwendbarkeit = Modell_Wiederverwendbarkeit(spi, nai)
+			kosten = Modell_Kosten(spi, nai)
+			reuseWert = int(kosten * RAKETE_REUSE_WERT)
+			gebot = Nachfrage_SiegGebot[ni]
+			cls
+			print Spieler_Name$[spi] + " bereitet Start von " + Nachfrageart_Name$[nai] + " vor..."
+			call Technik_Echo("Vorbereitung kostet " + kosten + "M")
+			call Technik_Echo("Die Rakete startet...")
+			if rand > zuverlaessigkeit then
+				call Technik_Echo("Rakete ist explodiert...")
+				call Technik_Echo("Strafzahlung von " + Nachfrageart_Strafe[nai] + "M...")
+				Spieler_Geld[spi] -= Nachfrageart_Strafe[nai]
+			else
+				call Technik_Echo(Nachfrageart_Name$[nai] + " ist am Ziel angekommen...")
+				call Technik_Echo("Praemie von " + gebot + "M erhalten...")
+				Spieler_Geld[spi] += gebot
+				call Technik_Echo("Erste Raketenstufe bereit zur Landung...")
+				if rand > wiederverwendbarkeit then
+					call Technik_Echo("Explosion...")
+				else
+					call Technik_Echo("Landung erfolgreich.")
+					call Technik_Echo("Rakete im Wert von " + reuseWert + "M zurueckbekommen...")
+					Spieler_Geld[spi] += reuseWert
+				endif
+			endif
+			call Technik_Echo("...an Geld verbleiben also " + Spieler_Geld[spi] + "M.")
+			input a$
+		endif
+	next ni
+end subroutine

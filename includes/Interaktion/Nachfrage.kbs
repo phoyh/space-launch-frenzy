@@ -1,0 +1,99 @@
+subroutine Interaktion_Nachfrage()
+	neue_NachfrageAnzahl = 1
+	if Nachfrage_Anzahl > 0 then
+		for ni = 0 to Nachfrage_Anzahl - 1
+			if Nachfrage_SiegGebot[ni] <> 0 then
+				neue_NachfrageAnzahl++
+			endif
+		next ni
+	endif
+	Nachfrage_Anzahl = neue_NachfrageAnzahl
+	if Nachfrage_Anzahl > NACHFRAGE_MAX_ANZAHL then
+		Nachfrage_Anzahl = NACHFRAGE_MAX_ANZAHL
+	endif
+	for ni = 0 to Nachfrage_Anzahl - 1
+		nai = int(rand * Nachfrageart_Anzahl)
+		Nachfrage_ArtIndex[ni] = nai
+		call Interaktion_Auktion(ni)
+	next ni
+end subroutine
+
+subroutine Interaktion_Auktion(ni)
+	nai = Nachfrage_ArtIndex[ni]
+	gebot = Nachfrageart_Anfangsgebot[nai]
+	aktuellGebotSpielerIndex = -1
+	uebrigeTicks = 1
+	while uebrigeTicks > 0
+		uebrigeTicks = GEBOT_MAXZEIT / 0.1
+		call Interaktion_GebotUebersicht(nai)
+		print
+		if aktuellGebotSpielerIndex = -1 then
+			print "Anfangsgebot: ";
+		else
+			print Spieler_Name$[aktuellGebotSpielerIndex] + " Gebot: ";
+		endif
+		print "" + gebot + "M"
+		if aktuellGebotSpielerIndex = -1 then
+			print
+			istZuTeuer = true
+			for spi = 0 to Spieler_Anzahl - 1
+				if Modell_Kosten(spi, nai) <= Spieler_Geld[spi] then
+					istZuTeuer = false
+				endif
+			next spi
+			if istZuTeuer then
+				input "Keiner kann eine Rakete zum Start bringen...", a$
+				uebrigeTicks = 0
+			else
+				input "Bei Return geht's los", a$
+				print "...Start!";
+			endif
+		endif
+		gebotSpielerIndex = -1
+		while gebotSpielerIndex = -1 and uebrigeTicks > 0
+			pause 0.1
+			a = key
+			gebotSpielerIndex = Spieler_IndexFuerKey(a)
+			if aktuellGebotSpielerIndex = gebotSpielerIndex then
+				gebotSpielerIndex = -1
+			endif
+			if gebotSpielerIndex <> -1 then
+				if Spieler_Geld[gebotSpielerIndex] < Modell_Kosten(gebotSpielerIndex, nai) then
+					gebotSpielerIndex = -1
+				endif
+			endif
+			uebrigeTicks--
+			if uebrigeTicks % 10 = 0 then
+				print "..." + (uebrigeTicks / 10);
+			endif
+		end while
+		if gebotSpielerIndex <> -1 then
+			aktuellGebotSpielerIndex = gebotSpielerIndex
+			gebot -= GEBOT_INTERVALL
+		endif
+	end while
+	Nachfrage_SpielerIndex[ni] = aktuellGebotSpielerIndex
+	if aktuellGebotSpielerIndex <> -1 then 
+		Nachfrage_SiegGebot[ni] = gebot
+		Spieler_Geld[aktuellGebotSpielerIndex] -= Modell_Kosten(aktuellGebotSpielerIndex, nai)
+	else
+		Nachfrage_SiegGebot[ni] = 0
+	endif
+end subroutine
+
+subroutine Interaktion_GebotUebersicht(nai)
+	cls
+	print "Nachfrage " + Nachfrageart_Name$[nai]
+	print "====================="
+	print
+	for spi = 0 to Spieler_Anzahl - 1
+		print "Erf. ";
+		print Technik_Prozent$(Modell_Zuverlaessigkeit(spi, nai));
+		print " / Wdv. "; 
+		print Technik_Prozent$(Modell_Wiederverwendbarkeit(spi, nai));
+		print " - "; 
+		print "Kosten " + Modell_Kosten(spi, nai) + "M - ";
+		print "Geld " + Spieler_Geld[spi] + "M";
+		print " ..." + Spieler_Name$[spi] 
+	next spi
+end subroutine

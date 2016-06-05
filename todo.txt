@@ -1,0 +1,35 @@
+Aktion Freischaltung:
+LEO erfolg vor GEO etc.
+
+nai:
+neue Art ISS-Personal mit saftiger Strafe
+
+Auktion:
+Anzeige nicht aktuelle Technologie
+	sondern beste Rakete mit Schubkraftklasse (auch hoehere Klasse verwendbar)
+	Teilnahme nur mit Rakete
+Anzeige Strafzahlung
+Anzeige Schubkraftklasse
+
+Flug:
+Landung kein Cash, dafuer alte Rakete
+
+Raketenbau:
+vor Technologiephase
+Interaktion:
+	Geld
+	Nach Schubkraftklasse
+		Operationsbereite
+		alte reparieren
+		Neubau Optionsliste je mit Prozent und Kosten
+	Mehrfachauswahl ohne Zusatzkosten
+	
+Schubkraftklassen einfuehren (5MN Falcon9, 35MN Saturn V)
+
+Awareness:
+Alle 3 Runden Quiz mit drei Fragen "Wer hat am meisten / wenigsten..."
+zu erraten also ein Spieler
+Mechanik: key druecken waehrend Spieler erscheint
+bei Fehler scheidet man und erratener aus der Frage aus
+Nach richtiger Antwort Aufloesung mit Tabelle
+Liste moeglicher Fragen treibt Statistikservice im Programm
