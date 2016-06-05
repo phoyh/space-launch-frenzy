@@ -7,7 +7,7 @@ subroutine Interaktion_Auftragsvergabe()
 		Nachfrage_RaketeIndex[ni] = -1
 	next ni
 	for ni = 0 to Nachfrage_Anzahl - 1
-		nai = int(rand * Nachfrageart_Anzahl)
+		nai = int(rand * Nachfrageart_VerfuegbarAnzahl)
 		Nachfrage_ArtIndex[ni] = nai
 		call Interaktion_Auktion(ni)
 	next ni
@@ -85,6 +85,9 @@ subroutine Interaktion_GebotUebersicht(nai, ref(spielerGebotRakete))
 	cls
 	print "Nachfrage " + Nachfrageart_Name$[nai]
 	print "====================="
+	print
+	print "Notwendige Subkraft: " + Nachfrageart_BenoetigteSchubkraft[nai] + " MN"
+	print "Strafe bei Fehler: " + Nachfrageart_Strafe[nai] + "M"
 	print
 	for spi = 0 to Spieler_Anzahl - 1
 		if spielerGebotRakete[spi] <> -1 then

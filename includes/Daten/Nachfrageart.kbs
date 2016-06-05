@@ -1,0 +1,6 @@
+subroutine Nachfrageart_FreischaltungBeiErfolg(nai)
+	if nai + 1 = Nachfrageart_VerfuegbarAnzahl and Nachfrageart_VerfuegbarAnzahl < Nachfrageart_Anzahl then
+		Nachfrageart_VerfuegbarAnzahl++
+		Nachfrageart_VerfuegbarMaxSchubkraft = Nachfrageart_BenoetigteSchubkraft[Nachfrageart_VerfuegbarAnzahl - 1]
+	endif
+end subroutine

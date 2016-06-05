@@ -53,14 +53,43 @@ function Rakete_GesamtStufe(ri)
 end function
 
 subroutine Rakete_Loeschen(ri)
-	Rakete_ArtIndex[ri] = Rakete_ArtIndex[Rakete_Anzahl-1]
-	Rakete_SpielerIndex[ri] = Rakete_SpielerIndex[Rakete_Anzahl-1]
-	Rakete_Zuverlaessigkeit[ri] = Rakete_Zuverlaessigkeit[Rakete_Anzahl-1]
-	Rakete_Wiederverwendbarkeit[ri] = Rakete_Wiederverwendbarkeit[Rakete_Anzahl-1]
-	Rakete_Effizienz[ri] = Rakete_Effizienz[Rakete_Anzahl-1]
-	Rakete_BenoetigtInstandsetzung[ri] = Rakete_BenoetigtInstandsetzung[Rakete_Anzahl-1]
-	Rakete_Anzahl--
+	Rakete_IstGueltig[ri] = false
+	if ri + 1 = Rakete_Anzahl then
+		istGueltig = false
+		while not istGueltig
+			Rakete_Anzahl--
+			if Rakete_Anzahl > 0 then
+				istGueltig = Rakete_IstGueltig[Rakete_Anzahl - 1]
+			else
+				istGueltig = true
+			endif
+		end while
+	endif
 end subroutine
+
+function Rakete_Hinzufuegen(rai, spi)
+	neuerRi = -1
+	if Rakete_Anzahl > 0 then
+		for ri = 0 to Rakete_Anzahl - 1
+			if neuerRi = -1 and not Rakete_IstGueltig[ri] then
+				neuerRi = ri
+			endif
+		next ri
+	endif
+	if neuerRi = -1 then
+		neuerRi = Rakete_Anzahl
+		Rakete_Anzahl++
+	endif
+	ri = neuerRi
+	Rakete_IstGueltig[ri] = true
+	Rakete_ArtIndex[ri] = rai
+	Rakete_SpielerIndex[ri] = spi
+	Rakete_Zuverlaessigkeit[ri] = Spieler_Zuverlaessigkeit[spi]
+	Rakete_Wiederverwendbarkeit[ri] = Spieler_Wiederverwendbarkeit[spi]
+	Rakete_Effizienz[ri] = Spieler_Effizienz[spi]
+	Rakete_BenoetigtInstandsetzung[ri] = false
+	return ri
+end function
 
 function Rakete_IstReserviert(ri)
 	for ni = 0 to NACHFRAGE_MAX_ANZAHL - 1

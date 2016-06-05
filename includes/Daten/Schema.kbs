@@ -27,6 +27,10 @@ global Nachfrageart_ZuverlaessigkeitLevel
 dim Nachfrageart_ZuverlaessigkeitLevel(NACHFRAGEART_MAX_ANZAHL)
 global Nachfrageart_WiederverwendbarkeitLevel
 dim Nachfrageart_WiederverwendbarkeitLevel(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_VerfuegbarAnzahl
+Nachfrageart_VerfuegbarAnzahl = 0
+global Nachfrageart_VerfuegbarMaxSchubkraft
+Nachfrageart_VerfuegbarMaxSchubkraft = 0
 
 global Nachfrage_ArtIndex
 dim Nachfrage_ArtIndex(NACHFRAGE_MAX_ANZAHL)
@@ -50,6 +54,8 @@ dim Raketenart_EffizienzLevel(RAKETENART_MAX_ANZAHL)
 
 global Rakete_Anzahl
 Rakete_Anzahl = 0
+global Rakete_IstGueltig
+dim Rakete_IstGueltig(RAKETE_MAX_ANZAHL)
 global Rakete_ArtIndex
 dim Rakete_ArtIndex(RAKETE_MAX_ANZAHL)
 global Rakete_SpielerIndex

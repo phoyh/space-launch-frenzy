@@ -8,6 +8,7 @@ subroutine Daten_SetupDummy()
 	call Spieler_Init_Dummy()
 	call Nachfrageart_Init()
 	call Raketenart_Init()
+	ECHO_DAUER = 0
 end subroutine
 
 subroutine Spieler_Init_Dummy()
@@ -57,6 +58,16 @@ subroutine Nachfrageart_Init()
 	Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_Anzahl] = 6
 	Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_Anzahl] = 60
 	Nachfrageart_Anzahl++
+	Nachfrageart_Name$[Nachfrageart_Anzahl] = "ISS Shuttle"
+	Nachfrageart_Anfangsgebot[Nachfrageart_Anzahl] = 300
+	Nachfrageart_Strafe[Nachfrageart_Anzahl] = 100
+	Nachfrageart_BenoetigteSchubkraft[Nachfrageart_Anzahl] = 5
+	Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_Anzahl] = 6
+	Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_Anzahl] = 40
+	Nachfrageart_Anzahl++
+	
+	Nachfrageart_VerfuegbarAnzahl = 1
+	Nachfrageart_VerfuegbarMaxSchubkraft = Nachfrageart_BenoetigteSchubkraft[0]
 end subroutine
 
 subroutine Raketenart_Init()
@@ -64,5 +75,10 @@ subroutine Raketenart_Init()
 	Raketenart_Schubkraft[Raketenart_Anzahl] = 5
 	Raketenart_Anfangskosten[Raketenart_Anzahl] = 200
 	Raketenart_EffizienzLevel[Raketenart_Anzahl] = 10
+	Raketenart_Anzahl++
+	Raketenart_Name$[Raketenart_Anzahl] = "Falcon Heavy (20 MN)"
+	Raketenart_Schubkraft[Raketenart_Anzahl] = 20
+	Raketenart_Anfangskosten[Raketenart_Anzahl] = 500
+	Raketenart_EffizienzLevel[Raketenart_Anzahl] = 30
 	Raketenart_Anzahl++
 end subroutine

@@ -22,6 +22,7 @@ subroutine Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
 	nai = Nachfrage_ArtIndex[ni]
 	if istNutzlastErfolg then
 		Spieler_Geld[spi] += Nachfrage_SiegGebot[ni]
+		call Nachfrageart_FreischaltungBeiErfolg(nai)
 	else
 		Spieler_Geld[spi] -= Nachfrageart_Strafe[nai]
 	endif
@@ -36,7 +37,7 @@ subroutine Spieler_Raketen(spi, ref(eigeneRi))
 	redim eigeneRi(Spieler_RaketenAnzahl(spi))
 	eri = 0
 	for ri = 0 to Rakete_Anzahl - 1
-		if Rakete_SpielerIndex[ri] = spi then
+		if Rakete_SpielerIndex[ri] = spi and Rakete_IstGueltig[ri] then
 			eigeneRi[eri++] = ri
 		endif
 	next ri
@@ -48,7 +49,7 @@ function Spieler_RaketenAnzahl(spi)
 	endif
 	anzahl = 0
 	for ri = 0 to Rakete_Anzahl - 1
-		if Rakete_SpielerIndex[ri] = spi then
+		if Rakete_SpielerIndex[ri] = spi and Rakete_IstGueltig[ri] then
 			anzahl++
 		endif
 	next ri
@@ -68,13 +69,7 @@ end function
 
 subroutine Spieler_Raketenbau(spi, rai)
 	Spieler_Geld[spi] -= Spieler_KostenRaketenbau(spi, rai)
-	Rakete_ArtIndex[Rakete_Anzahl] = rai
-	Rakete_SpielerIndex[Rakete_Anzahl] = spi
-	Rakete_Zuverlaessigkeit[Rakete_Anzahl] = Spieler_Zuverlaessigkeit[spi]
-	Rakete_Wiederverwendbarkeit[Rakete_Anzahl] = Spieler_Wiederverwendbarkeit[spi]
-	Rakete_Effizienz[Rakete_Anzahl] = Spieler_Effizienz[spi]
-	Rakete_BenoetigtInstandsetzung[Rakete_Anzahl] = false
-	Rakete_Anzahl++
+	call Rakete_Hinzufuegen(rai, spi)
 end subroutine
 
 function Spieler_IndexBesteRaketeFuerNachfragenart(spi, nai)
@@ -85,13 +80,18 @@ function Spieler_IndexBesteRaketeFuerNachfragenart(spi, nai)
 	call Spieler_Raketen(spi, ref(eigeneRi))
 	besterRi = -1
 	besterGesamtStufe = -1
+	besterSchubkraft = 1000000000
 	for eri = 0 to eigeneRi[?] - 1
 		ri = eigeneRi[eri]
-		if Raketenart_Schubkraft[Rakete_ArtIndex[ri]] >= Nachfrageart_BenoetigteSchubkraft[nai] and not Rakete_BenoetigtInstandsetzung[ri] and not Rakete_IstReserviert(ri) then
-			gesamtStufe = Rakete_GesamtStufe(ri)
-			if gesamtStufe > besterGesamtStufe then
-				besterRi = ri
-				besterGesamtStufe = gesamtStufe
+		schubkraft = Raketenart_Schubkraft[Rakete_ArtIndex[ri]]
+		if schubkraft >= Nachfrageart_BenoetigteSchubkraft[nai] and not Rakete_BenoetigtInstandsetzung[ri] and not Rakete_IstReserviert(ri) then
+			if schubkraft <= besterSchubkraft then
+				gesamtStufe = Rakete_GesamtStufe(ri)
+				if schubkraft < besterSchubkraft or gesamtStufe > besterGesamtStufe then
+					besterRi = ri
+					besterGesamtStufe = gesamtStufe
+					besterSchubkraft = schubkraft
+				endif
 			endif
 		endif
 	next eri

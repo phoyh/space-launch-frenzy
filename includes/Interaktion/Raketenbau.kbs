@@ -32,15 +32,17 @@ subroutine Interaktion_Raketenbau()
 			endif
 			print "Neu:"
 			for rai = 0 to Raketenart_Anzahl - 1
-				kosten = Spieler_KostenRaketenbau(spi, rai)
-				if Spieler_Geld[spi] >= kosten then
-					optionIndex++
-					print "[" + optionIndex + "]";
-				else
-					print "...";
+				if Raketenart_Schubkraft[rai] <= Nachfrageart_VerfuegbarMaxSchubkraft then
+					kosten = Spieler_KostenRaketenbau(spi, rai)
+					if Spieler_Geld[spi] >= kosten then
+						optionIndex++
+						print "[" + optionIndex + "]";
+					else
+						print "...";
+					endif
+					print " {" + kosten + "M} ";
+					print Spieler_TextNeueRakete$(spi, rai)
 				endif
-				print " {" + kosten + "M} ";
-				print Spieler_TextNeueRakete$(spi, rai)
 			next rai
 			optionAnzahl = optionIndex
 			print
@@ -67,11 +69,13 @@ subroutine Interaktion_Raketenbau()
 					next eri
 				endif
 				for rai = 0 to Raketenart_Anzahl - 1
-					kosten = Spieler_KostenRaketenbau(spi, rai)
-					if Spieler_Geld[spi] >= kosten then
-						optionIndex++
-						if optionIndex = gewaehlteOption then
-							call Spieler_Raketenbau(spi, rai)
+					if Raketenart_Schubkraft[rai] <= Nachfrageart_VerfuegbarMaxSchubkraft then
+						kosten = Spieler_KostenRaketenbau(spi, rai)
+						if Spieler_Geld[spi] >= kosten then
+							optionIndex++
+							if optionIndex = gewaehlteOption then
+								call Spieler_Raketenbau(spi, rai)
+							endif
 						endif
 					endif
 				next rai

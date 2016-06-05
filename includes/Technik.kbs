@@ -3,6 +3,6 @@ function Technik_Prozent$(zahl)
 end function
 
 subroutine Technik_Echo(text$)
-	pause 2
+	pause ECHO_DAUER
 	print text$
 end subroutine
