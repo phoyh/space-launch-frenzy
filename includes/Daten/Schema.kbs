@@ -19,22 +19,46 @@ global Nachfrageart_Name$
 dim Nachfrageart_Name$(NACHFRAGEART_MAX_ANZAHL)
 global Nachfrageart_Anfangsgebot
 dim Nachfrageart_Anfangsgebot(NACHFRAGEART_MAX_ANZAHL)
-global Nachfrageart_Anfangskosten
-dim Nachfrageart_Anfangskosten(NACHFRAGEART_MAX_ANZAHL)
 global Nachfrageart_Strafe
 dim Nachfrageart_Strafe(NACHFRAGEART_MAX_ANZAHL)
+global Nachfrageart_BenoetigteSchubkraft
+dim Nachfrageart_BenoetigteSchubkraft(NACHFRAGEART_MAX_ANZAHL)
 global Nachfrageart_ZuverlaessigkeitLevel
 dim Nachfrageart_ZuverlaessigkeitLevel(NACHFRAGEART_MAX_ANZAHL)
 global Nachfrageart_WiederverwendbarkeitLevel
 dim Nachfrageart_WiederverwendbarkeitLevel(NACHFRAGEART_MAX_ANZAHL)
-global Nachfrageart_EffizienzLevel
-dim Nachfrageart_EffizienzLevel(NACHFRAGEART_MAX_ANZAHL)
 
 global Nachfrage_ArtIndex
 dim Nachfrage_ArtIndex(NACHFRAGE_MAX_ANZAHL)
-global Nachfrage_SpielerIndex
-dim Nachfrage_SpielerIndex(NACHFRAGE_MAX_ANZAHL)
+global Nachfrage_RaketeIndex
+dim Nachfrage_RaketeIndex(NACHFRAGE_MAX_ANZAHL)
 global Nachfrage_SiegGebot
 dim Nachfrage_SiegGebot(NACHFRAGE_MAX_ANZAHL)
 global Nachfrage_Anzahl
 Nachfrage_Anzahl = NACHFRAGE_MAX_ANZAHL
+
+global Raketenart_Anzahl
+Raketenart_Anzahl = 0
+global Raketenart_Name$
+dim Raketenart_Name$(RAKETENART_MAX_ANZAHL)
+global Raketenart_Schubkraft
+dim Raketenart_Schubkraft(RAKETENART_MAX_ANZAHL)
+global Raketenart_Anfangskosten
+dim Raketenart_Anfangskosten(RAKETENART_MAX_ANZAHL)
+global Raketenart_EffizienzLevel
+dim Raketenart_EffizienzLevel(RAKETENART_MAX_ANZAHL)
+
+global Rakete_Anzahl
+Rakete_Anzahl = 0
+global Rakete_ArtIndex
+dim Rakete_ArtIndex(RAKETE_MAX_ANZAHL)
+global Rakete_SpielerIndex
+dim Rakete_SpielerIndex(RAKETE_MAX_ANZAHL)
+global Rakete_Zuverlaessigkeit
+dim Rakete_Zuverlaessigkeit(RAKETE_MAX_ANZAHL)
+global Rakete_Wiederverwendbarkeit
+dim Rakete_Wiederverwendbarkeit(RAKETE_MAX_ANZAHL)
+global Rakete_Effizienz
+dim Rakete_Effizienz(RAKETE_MAX_ANZAHL)
+global Rakete_BenoetigtInstandsetzung
+dim Rakete_BenoetigtInstandsetzung(RAKETE_MAX_ANZAHL)

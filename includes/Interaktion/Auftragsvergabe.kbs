@@ -1,16 +1,11 @@
-subroutine Interaktion_Nachfrage()
-	neue_NachfrageAnzahl = 1
-	if Nachfrage_Anzahl > 0 then
-		for ni = 0 to Nachfrage_Anzahl - 1
-			if Nachfrage_SiegGebot[ni] <> 0 then
-				neue_NachfrageAnzahl++
-			endif
-		next ni
-	endif
-	Nachfrage_Anzahl = neue_NachfrageAnzahl
+subroutine Interaktion_Auftragsvergabe()
+	Nachfrage_Anzahl = Nachfrage_AnzahlVergeben() + 1
 	if Nachfrage_Anzahl > NACHFRAGE_MAX_ANZAHL then
 		Nachfrage_Anzahl = NACHFRAGE_MAX_ANZAHL
 	endif
+	for ni = 0 to NACHFRAGE_MAX_ANZAHL - 1
+		Nachfrage_RaketeIndex[ni] = -1
+	next ni
 	for ni = 0 to Nachfrage_Anzahl - 1
 		nai = int(rand * Nachfrageart_Anzahl)
 		Nachfrage_ArtIndex[ni] = nai
@@ -20,12 +15,21 @@ end subroutine
 
 subroutine Interaktion_Auktion(ni)
 	nai = Nachfrage_ArtIndex[ni]
+	dim spielerGebotRakete(Spieler_Anzahl)
+	zugelasseneSpielerAnzahl = 0
+	for spi = 0 to Spieler_Anzahl - 1
+		ri = Spieler_IndexBesteRaketeFuerNachfragenart(spi, nai)
+		if ri <> -1 then
+			zugelasseneSpielerAnzahl++
+		endif
+		spielerGebotRakete[spi] = ri
+	next spi
 	gebot = Nachfrageart_Anfangsgebot[nai]
 	aktuellGebotSpielerIndex = -1
 	uebrigeTicks = 1
 	while uebrigeTicks > 0
 		uebrigeTicks = GEBOT_MAXZEIT / 0.1
-		call Interaktion_GebotUebersicht(nai)
+		call Interaktion_GebotUebersicht(nai, ref(spielerGebotRakete))
 		print
 		if aktuellGebotSpielerIndex = -1 then
 			print "Anfangsgebot: ";
@@ -35,13 +39,7 @@ subroutine Interaktion_Auktion(ni)
 		print "" + gebot + "M"
 		if aktuellGebotSpielerIndex = -1 then
 			print
-			istZuTeuer = true
-			for spi = 0 to Spieler_Anzahl - 1
-				if Modell_Kosten(spi, nai) <= Spieler_Geld[spi] then
-					istZuTeuer = false
-				endif
-			next spi
-			if istZuTeuer then
+			if zugelasseneSpielerAnzahl = 0 then
 				input "Keiner kann eine Rakete zum Start bringen...", a$
 				uebrigeTicks = 0
 			else
@@ -58,7 +56,7 @@ subroutine Interaktion_Auktion(ni)
 				gebotSpielerIndex = -1
 			endif
 			if gebotSpielerIndex <> -1 then
-				if Spieler_Geld[gebotSpielerIndex] < Modell_Kosten(gebotSpielerIndex, nai) then
+				if spielerGebotRakete[gebotSpielerIndex] = -1 then
 					gebotSpielerIndex = -1
 				endif
 			endif
@@ -68,32 +66,29 @@ subroutine Interaktion_Auktion(ni)
 			endif
 		end while
 		if gebotSpielerIndex <> -1 then
+			if aktuellGebotSpielerIndex <> -1 then
+				gebot -= GEBOT_INTERVALL
+			endif
 			aktuellGebotSpielerIndex = gebotSpielerIndex
-			gebot -= GEBOT_INTERVALL
 		endif
 	end while
-	Nachfrage_SpielerIndex[ni] = aktuellGebotSpielerIndex
 	if aktuellGebotSpielerIndex <> -1 then 
+		Nachfrage_RaketeIndex[ni] = spielerGebotRakete[aktuellGebotSpielerIndex]
 		Nachfrage_SiegGebot[ni] = gebot
-		Spieler_Geld[aktuellGebotSpielerIndex] -= Modell_Kosten(aktuellGebotSpielerIndex, nai)
 	else
+		Nachfrage_RaketeIndex[ni] = -1
 		Nachfrage_SiegGebot[ni] = 0
 	endif
 end subroutine
 
-subroutine Interaktion_GebotUebersicht(nai)
+subroutine Interaktion_GebotUebersicht(nai, ref(spielerGebotRakete))
 	cls
 	print "Nachfrage " + Nachfrageart_Name$[nai]
 	print "====================="
 	print
 	for spi = 0 to Spieler_Anzahl - 1
-		print "Erf. ";
-		print Technik_Prozent$(Modell_Zuverlaessigkeit(spi, nai));
-		print " / Wdv. "; 
-		print Technik_Prozent$(Modell_Wiederverwendbarkeit(spi, nai));
-		print " - "; 
-		print "Kosten " + Modell_Kosten(spi, nai) + "M - ";
-		print "Geld " + Spieler_Geld[spi] + "M";
-		print " ..." + Spieler_Name$[spi] 
+		if spielerGebotRakete[spi] <> -1 then
+			print Rakete_TextFuerNachfrageart$(spielerGebotRakete[spi], nai)
+		endif
 	next spi
 end subroutine

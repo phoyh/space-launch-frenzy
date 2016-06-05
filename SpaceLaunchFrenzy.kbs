@@ -1,18 +1,14 @@
-include "includes/Konstanten.kbs"
-include "includes/Variablen.kbs"
-include "includes/Setup.kbs"
+include "includes/Daten.kbs"
 include "includes/Interaktion.kbs"
-include "includes/Modell.kbs"
 include "includes/Technik.kbs"
-include "includes/Spieler.kbs"
 
-rem call Spieler_Init()
-call Spieler_Init_Dummy()
-call Nachfrageart_Init()
+rem call Daten_Setup()
+call Daten_SetupDummy()
 
 while true
-	call Interaktion_Nachfrage()
+	call Interaktion_Auftragsvergabe()
 	call Interaktion_Auftragsdurchfuehrung()
+	call Interaktion_Raketenbau()
 	call Interaktion_Technologie()
 	call Interaktion_Funding()
 endwhile

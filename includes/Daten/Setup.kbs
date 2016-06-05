@@ -1,10 +1,22 @@
+subroutine Daten_Setup()
+	call Spieler_Init()
+	call Nachfrageart_Init()
+	call Raketenart_Init()
+end subroutine
+
+subroutine Daten_SetupDummy()
+	call Spieler_Init_Dummy()
+	call Nachfrageart_Init()
+	call Raketenart_Init()
+end subroutine
+
 subroutine Spieler_Init_Dummy()
 	Spieler_Name$[Spieler_Anzahl] = "Max"
 	Spieler_Geld[Spieler_Anzahl] = SPIELER_STARTGELD
 	Spieler_GebotKey[Spieler_Anzahl] = 77
 	Spieler_Anzahl++
 	Spieler_Name$[Spieler_Anzahl] = "Philipp"
-	Spieler_Geld[Spieler_Anzahl] = SPIELER_STARTGELD
+	Spieler_Geld[Spieler_Anzahl] = SPIELER_STARTGELD * 100
 	Spieler_GebotKey[Spieler_Anzahl] = 80
 	Spieler_Anzahl++
 end subroutine
@@ -33,18 +45,24 @@ end subroutine
 subroutine Nachfrageart_Init()
 	Nachfrageart_Name$[Nachfrageart_Anzahl] = "LEO Satellit"
 	Nachfrageart_Anfangsgebot[Nachfrageart_Anzahl] = 140
-	Nachfrageart_Anfangskosten[Nachfrageart_Anzahl] = 200
 	Nachfrageart_Strafe[Nachfrageart_Anzahl] = 10
+	Nachfrageart_BenoetigteSchubkraft[Nachfrageart_Anzahl] = 5
 	Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_Anzahl] = 5
 	Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_Anzahl] = 30
-	Nachfrageart_EffizienzLevel[Nachfrageart_Anzahl] = 10
 	Nachfrageart_Anzahl++
 	Nachfrageart_Name$[Nachfrageart_Anzahl] = "GEO Satellit"
 	Nachfrageart_Anfangsgebot[Nachfrageart_Anzahl] = 200
-	Nachfrageart_Anfangskosten[Nachfrageart_Anzahl] = 300
 	Nachfrageart_Strafe[Nachfrageart_Anzahl] = 15
+	Nachfrageart_BenoetigteSchubkraft[Nachfrageart_Anzahl] = 5
 	Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_Anzahl] = 6
 	Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_Anzahl] = 60
-	Nachfrageart_EffizienzLevel[Nachfrageart_Anzahl] = 15
 	Nachfrageart_Anzahl++
+end subroutine
+
+subroutine Raketenart_Init()
+	Raketenart_Name$[Raketenart_Anzahl] = "Falcon (5 MN)"
+	Raketenart_Schubkraft[Raketenart_Anzahl] = 5
+	Raketenart_Anfangskosten[Raketenart_Anzahl] = 200
+	Raketenart_EffizienzLevel[Raketenart_Anzahl] = 10
+	Raketenart_Anzahl++
 end subroutine

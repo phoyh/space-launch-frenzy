@@ -1,0 +1,81 @@
+subroutine Interaktion_Raketenbau()
+	for spi = 0 to Spieler_Anzahl - 1
+		gewaehlteOption = -1
+		while gewaehlteOption <> 0 
+			cls
+			print "Raketenbau " + Spieler_Name$[spi] + " - Geld " + Spieler_Geld[spi] + "M"
+			print "==============================="
+			print
+			anzahlInstandzusetzende = 0
+			optionIndex = 0
+			if Spieler_RaketenAnzahl(spi) > 0 then
+				print "Lager:"
+				eigeneRi = 0
+				call Spieler_Raketen(spi, ref(eigeneRi))
+				for eri = 0 to eigeneRi[?] - 1
+					ri = eigeneRi[eri]
+					kosten = Rakete_KostenInstandsetzung(ri)
+					if Rakete_BenoetigtInstandsetzung[ri] then
+						if Spieler_Geld[spi] >= kosten then
+							optionIndex++
+							print "[" + optionIndex + "]";
+						else
+							print "...";
+						endif
+						print " {" + kosten + "M} ";
+					else
+						print "... ";
+					endif
+					print Rakete_TextOhneSpieler$(ri)
+				next eri
+				print
+			endif
+			print "Neu:"
+			for rai = 0 to Raketenart_Anzahl - 1
+				kosten = Spieler_KostenRaketenbau(spi, rai)
+				if Spieler_Geld[spi] >= kosten then
+					optionIndex++
+					print "[" + optionIndex + "]";
+				else
+					print "...";
+				endif
+				print " {" + kosten + "M} ";
+				print Spieler_TextNeueRakete$(spi, rai)
+			next rai
+			optionAnzahl = optionIndex
+			print
+			gewaehlteOption = -1
+			if optionAnzahl = 0 then
+				gewaehlteOption = 0
+				input "Nicht genuegend Geld...", a$
+			endif
+			while gewaehlteOption < 0 or gewaehlteOption > optionAnzahl or gewaehlteOption <> int(gewaehlteOption)
+				input "Auswahl (1-" + optionAnzahl + " oder Return): ", gewaehlteOption
+			end while
+			if gewaehlteOption > 0 then
+				optionIndex = 0
+				if Spieler_RaketenAnzahl(spi) > 0 then
+					for eri = 0 to eigeneRi[?] - 1
+						ri = eigeneRi[eri]
+						kosten = Rakete_KostenInstandsetzung(ri)
+						if Rakete_BenoetigtInstandsetzung[ri] and Spieler_Geld[spi] >= kosten then
+							optionIndex++
+							if optionIndex = gewaehlteOption then
+								call Rakete_Instandsetzen(ri)
+							endif
+						endif
+					next eri
+				endif
+				for rai = 0 to Raketenart_Anzahl - 1
+					kosten = Spieler_KostenRaketenbau(spi, rai)
+					if Spieler_Geld[spi] >= kosten then
+						optionIndex++
+						if optionIndex = gewaehlteOption then
+							call Spieler_Raketenbau(spi, rai)
+						endif
+					endif
+				next rai
+			endif
+		end while
+	next spi
+end subroutine

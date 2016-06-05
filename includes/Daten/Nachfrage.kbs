@@ -1,0 +1,11 @@
+function Nachfrage_AnzahlVergeben()
+	result = 0
+	if Nachfrage_Anzahl > 0 then
+		for ni = 0 to Nachfrage_Anzahl - 1
+			if Nachfrage_SiegGebot[ni] <> 0 then
+				result++
+			endif
+		next ni
+	endif
+	return result
+end function

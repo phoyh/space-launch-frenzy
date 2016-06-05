@@ -1,34 +1,37 @@
 subroutine Interaktion_Auftragsdurchfuehrung()
 	for ni = 0 to Nachfrage_Anzahl - 1
-		spi = Nachfrage_SpielerIndex[ni]
-		if spi <> -1 then
+		ri = Nachfrage_RaketeIndex[ni]
+		if ri <> -1 then
+			spi = Rakete_SpielerIndex[ri]
+			istNutzlastErfolg = false
+			istLandungErfolg = false
 			nai = Nachfrage_ArtIndex[ni]
-			zuverlaessigkeit = Modell_Zuverlaessigkeit(spi, nai)
-			wiederverwendbarkeit = Modell_Wiederverwendbarkeit(spi, nai)
-			kosten = Modell_Kosten(spi, nai)
-			reuseWert = int(kosten * RAKETE_REUSE_WERT)
+			zuverlaessigkeit = Rakete_ZuverlaessigkeitFuerNachfrageart(ri, nai)
+			wiederverwendbarkeit = Rakete_WiederverwendbarkeitFuerNachfrageart(ri, nai)
+			kosten = Rakete_Kosten(ri)
+			reuseWert = kosten - Rakete_KostenInstandsetzung(ri)
 			gebot = Nachfrage_SiegGebot[ni]
 			cls
-			print Spieler_Name$[spi] + " bereitet Start von " + Nachfrageart_Name$[nai] + " vor..."
-			call Technik_Echo("Vorbereitung kostet " + kosten + "M")
+			print Spieler_Name$[spi] + " bereitet Start von " + Raketenart_Name$[Rakete_ArtIndex[ri]] + " vor..."
+			call Technik_Echo("Rakete kostete " + kosten + "M")
 			call Technik_Echo("Die Rakete startet...")
 			if rand > zuverlaessigkeit then
 				call Technik_Echo("Rakete ist explodiert...")
 				call Technik_Echo("Strafzahlung von " + Nachfrageart_Strafe[nai] + "M...")
-				Spieler_Geld[spi] -= Nachfrageart_Strafe[nai]
 			else
+				istNutzlastErfolg = true
 				call Technik_Echo(Nachfrageart_Name$[nai] + " ist am Ziel angekommen...")
 				call Technik_Echo("Praemie von " + gebot + "M erhalten...")
-				Spieler_Geld[spi] += gebot
 				call Technik_Echo("Erste Raketenstufe bereit zur Landung...")
 				if rand > wiederverwendbarkeit then
 					call Technik_Echo("Explosion...")
 				else
+					istLandungErfolg = true
 					call Technik_Echo("Landung erfolgreich.")
 					call Technik_Echo("Rakete im Wert von " + reuseWert + "M zurueckbekommen...")
-					Spieler_Geld[spi] += reuseWert
 				endif
 			endif
+			call Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
 			call Technik_Echo("...an Geld verbleiben also " + Spieler_Geld[spi] + "M.")
 			input a$
 		endif

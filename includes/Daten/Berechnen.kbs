@@ -1,0 +1,13 @@
+function Berechnen_Zuverlaessigkeit(stufe, schwierigkeitslevel)
+	return stufe / (stufe + schwierigkeitslevel) 
+end function
+
+function Berechnen_Wiederverwendbarkeit(stufe, schwierigkeitslevel)
+	return stufe / (stufe + schwierigkeitslevel) 
+end function
+
+function Berechnen_Kosten(stufe, schwierigkeitslevel, kosten)
+	kostenKoeffizient = schwierigkeitslevel / (stufe + schwierigkeitslevel) * (1 - KOSTEN_MINIMAL) + KOSTEN_MINIMAL
+	result = int(kosten * kostenKoeffizient)
+	return result 
+end function

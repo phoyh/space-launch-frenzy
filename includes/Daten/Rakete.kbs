@@ -1,0 +1,72 @@
+function Rakete_TextOhneSpieler$(ri)
+	return Rakete_TextOhneSpielerFuerKonfiguration$(Rakete_ArtIndex[ri], Rakete_BenoetigtInstandsetzung[ri], Rakete_Zuverlaessigkeit[ri], Rakete_Wiederverwendbarkeit[ri], Rakete_Effizienz[ri])
+end function
+
+function Rakete_TextOhneSpielerFuerKonfiguration$(rai, b, z, w, e)
+	text$ = Raketenart_Name$[rai]
+	if b then
+		text$ = text$ + " (beschaedigt)" 
+	endif
+	text$ = text$ + ": "
+	text$ = text$ + "Zvl. " + z + " - "
+	text$ = text$ + "Wdv. " + w + " - "
+	text$ = text$ + "Eff. " + e
+	return text$
+end function
+
+function Rakete_TextFuerNachfrageart$(ri, nai)
+	text$ = Raketenart_Name$[Rakete_ArtIndex[ri]] + ": "
+	text$ = text$ + "Erf. " + Technik_Prozent$(Rakete_ZuverlaessigkeitFuerNachfrageart(ri, nai))
+	text$ = text$ + " / Wdv. " + Technik_Prozent$(Rakete_WiederverwendbarkeitFuerNachfrageart(ri, nai))
+	text$ = text$ + " Baukosten " + Rakete_Kosten(ri)  + "M"
+	text$ = text$ + " ..." + Spieler_Name$[Rakete_SpielerIndex[ri]]
+	return text$ 
+end function
+
+function Rakete_KostenInstandsetzung(ri)
+	return int((1 - RAKETE_REUSE_WERT) * Rakete_Kosten(ri))
+end function
+
+function Rakete_Kosten(ri)
+	stufe = Rakete_Effizienz[ri]
+	rai = Rakete_ArtIndex[ri]
+	schwierigkeitslevel = Raketenart_EffizienzLevel[rai]
+	kosten = Raketenart_Anfangskosten[rai]
+	return Berechnen_Kosten(stufe, schwierigkeitslevel, kosten)
+end function
+
+subroutine Rakete_Instandsetzen(ri)
+	Rakete_BenoetigtInstandsetzung[ri] = false
+	Spieler_Geld[Rakete_SpielerIndex[ri]] -= Rakete_KostenInstandsetzung(ri)
+end subroutine
+
+function Rakete_ZuverlaessigkeitFuerNachfrageart(ri, nai)
+	return Berechnen_Zuverlaessigkeit(Rakete_Zuverlaessigkeit[ri], Nachfrageart_ZuverlaessigkeitLevel[nai])
+end function
+
+function Rakete_WiederverwendbarkeitFuerNachfrageart(ri, nai)
+	return Berechnen_Wiederverwendbarkeit(Rakete_Wiederverwendbarkeit[ri], Nachfrageart_WiederverwendbarkeitLevel[nai])
+end function
+
+function Rakete_GesamtStufe(ri)
+	return Rakete_Zuverlaessigkeit[ri] + Rakete_Wiederverwendbarkeit[ri] + Rakete_Effizienz[ri]
+end function
+
+subroutine Rakete_Loeschen(ri)
+	Rakete_ArtIndex[ri] = Rakete_ArtIndex[Rakete_Anzahl-1]
+	Rakete_SpielerIndex[ri] = Rakete_SpielerIndex[Rakete_Anzahl-1]
+	Rakete_Zuverlaessigkeit[ri] = Rakete_Zuverlaessigkeit[Rakete_Anzahl-1]
+	Rakete_Wiederverwendbarkeit[ri] = Rakete_Wiederverwendbarkeit[Rakete_Anzahl-1]
+	Rakete_Effizienz[ri] = Rakete_Effizienz[Rakete_Anzahl-1]
+	Rakete_BenoetigtInstandsetzung[ri] = Rakete_BenoetigtInstandsetzung[Rakete_Anzahl-1]
+	Rakete_Anzahl--
+end subroutine
+
+function Rakete_IstReserviert(ri)
+	for ni = 0 to NACHFRAGE_MAX_ANZAHL - 1
+		if Nachfrage_RaketeIndex[ni] = ri then
+			return true
+		endif
+	next ni
+	return false
+endfunction

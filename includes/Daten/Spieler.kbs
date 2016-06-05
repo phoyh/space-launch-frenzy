@@ -1,0 +1,99 @@
+function Spieler_IndexFuerKey(a)
+	result = -1
+	for spi = 0 to Spieler_Anzahl - 1
+		if Spieler_GebotKey[spi] = a then
+			result = spi
+		endif
+	next spi
+	return result
+end function
+
+function Spieler_ZuverlaessigkeitFuerNachfrageart(spi, nai)
+	return Berechnen_Zuverlaessigkeit(Spieler_Zuverlaessigkeit[spi], Nachfrageart_ZuverlaessigkeitLevel[nai])
+end function
+
+function Spieler_WiederverwendbarkeitFuerNachfrageart(spi, nai)
+	return Berechnen_Wiederverwendbarkeit(Spieler_Wiederverwendbarkeit[spi], Nachfrageart_WiederverwendbarkeitLevel[nai])
+end function
+
+subroutine Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
+	ri = Nachfrage_RaketeIndex[ni]
+	spi = Rakete_SpielerIndex[ri]
+	nai = Nachfrage_ArtIndex[ni]
+	if istNutzlastErfolg then
+		Spieler_Geld[spi] += Nachfrage_SiegGebot[ni]
+	else
+		Spieler_Geld[spi] -= Nachfrageart_Strafe[nai]
+	endif
+	if istLandungErfolg then
+		Rakete_BenoetigtInstandsetzung[ri] = true
+	else
+		call Rakete_Loeschen(ri)
+	endif
+end subroutine
+
+subroutine Spieler_Raketen(spi, ref(eigeneRi))
+	redim eigeneRi(Spieler_RaketenAnzahl(spi))
+	eri = 0
+	for ri = 0 to Rakete_Anzahl - 1
+		if Rakete_SpielerIndex[ri] = spi then
+			eigeneRi[eri++] = ri
+		endif
+	next ri
+end subroutine
+
+function Spieler_RaketenAnzahl(spi)
+	if Rakete_Anzahl = 0 then
+		return 0
+	endif
+	anzahl = 0
+	for ri = 0 to Rakete_Anzahl - 1
+		if Rakete_SpielerIndex[ri] = spi then
+			anzahl++
+		endif
+	next ri
+	return anzahl
+end function
+
+function Spieler_KostenRaketenbau(spi, rai)
+	stufe = Spieler_Effizienz[spi]
+	schwierigkeitslevel = Raketenart_EffizienzLevel[rai]
+	kosten = Raketenart_Anfangskosten[rai]
+	return Berechnen_Kosten(stufe, schwierigkeitslevel, kosten) 
+end function
+
+function Spieler_TextNeueRakete$(spi, rai)
+	return Rakete_TextOhneSpielerFuerKonfiguration$(rai, false, Spieler_Zuverlaessigkeit[spi], Spieler_Wiederverwendbarkeit[spi], Spieler_Effizienz[spi])
+end function
+
+subroutine Spieler_Raketenbau(spi, rai)
+	Spieler_Geld[spi] -= Spieler_KostenRaketenbau(spi, rai)
+	Rakete_ArtIndex[Rakete_Anzahl] = rai
+	Rakete_SpielerIndex[Rakete_Anzahl] = spi
+	Rakete_Zuverlaessigkeit[Rakete_Anzahl] = Spieler_Zuverlaessigkeit[spi]
+	Rakete_Wiederverwendbarkeit[Rakete_Anzahl] = Spieler_Wiederverwendbarkeit[spi]
+	Rakete_Effizienz[Rakete_Anzahl] = Spieler_Effizienz[spi]
+	Rakete_BenoetigtInstandsetzung[Rakete_Anzahl] = false
+	Rakete_Anzahl++
+end subroutine
+
+function Spieler_IndexBesteRaketeFuerNachfragenart(spi, nai)
+	if Spieler_RaketenAnzahl(spi) = 0 then
+		return -1
+	endif
+	eigeneRi = 0
+	call Spieler_Raketen(spi, ref(eigeneRi))
+	besterRi = -1
+	besterGesamtStufe = -1
+	for eri = 0 to eigeneRi[?] - 1
+		ri = eigeneRi[eri]
+		if Raketenart_Schubkraft[Rakete_ArtIndex[ri]] >= Nachfrageart_BenoetigteSchubkraft[nai] and not Rakete_BenoetigtInstandsetzung[ri] and not Rakete_IstReserviert(ri) then
+			gesamtStufe = Rakete_GesamtStufe(ri)
+			if gesamtStufe > besterGesamtStufe then
+				besterRi = ri
+				besterGesamtStufe = gesamtStufe
+			endif
+		endif
+	next eri
+	return besterRi
+end function

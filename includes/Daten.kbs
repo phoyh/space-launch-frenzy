@@ -1,0 +1,8 @@
+include "includes/Daten/Konstanten.kbs"
+include "includes/Daten/Schema.kbs"
+include "includes/Daten/Setup.kbs"
+include "includes/Daten/Berechnen.kbs"
+include "includes/Daten/Raketenart.kbs"
+include "includes/Daten/Rakete.kbs"
+include "includes/Daten/Spieler.kbs"
+include "includes/Daten/Nachfrage.kbs"
