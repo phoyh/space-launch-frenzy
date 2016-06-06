@@ -1,15 +1,21 @@
-subroutine Daten_Setup()
-	call Spieler_Init()
+subroutine Daten_SetupMitOhneDummy(istMitDummy)
+	if istMitDummy then
+		call Spieler_Init_Dummy()
+		ECHO_DAUER = 0
+	else
+		call Spieler_Init()
+	endif
 	call Nachfrageart_Init()
 	call Raketenart_Init()
 	call Statistik_Init()
 end subroutine
 
+subroutine Daten_Setup()
+	call Daten_SetupMitOhneDummy(false)
+end subroutine
+
 subroutine Daten_SetupDummy()
-	call Spieler_Init_Dummy()
-	call Nachfrageart_Init()
-	call Raketenart_Init()
-	ECHO_DAUER = 0
+	call Daten_SetupMitOhneDummy(true)
 end subroutine
 
 subroutine Spieler_Init_Dummy()

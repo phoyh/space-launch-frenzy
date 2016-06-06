@@ -1,7 +1,0 @@
-Awareness:
-Alle 3 Runden Quiz mit drei Fragen "Wer hat am meisten / wenigsten..."
-zu erraten also ein Spieler
-Mechanik: key druecken waehrend Spieler erscheint
-bei Fehler scheidet man und erratener aus der Frage aus
-Nach richtiger Antwort Aufloesung mit Tabelle
-Liste moeglicher Fragen treibt Statistikservice im Programm

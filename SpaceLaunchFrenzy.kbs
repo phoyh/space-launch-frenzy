@@ -2,8 +2,8 @@ include "includes/Daten.kbs"
 include "includes/Interaktion.kbs"
 include "includes/Technik.kbs"
 
-rem call Daten_Setup()
-call Daten_SetupDummy()
+call Daten_Setup()
+rem call Daten_SetupDummy()
 
 while true
 	runde++
