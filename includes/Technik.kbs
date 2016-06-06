@@ -1,3 +1,6 @@
+outputvisible true
+editvisible false
+
 function Technik_Prozent$(zahl)
 	return "" + int(10000 * zahl) / 100 + "%" 
 end function
@@ -6,3 +9,32 @@ subroutine Technik_Echo(text$)
 	pause ECHO_DAUER
 	print text$
 end subroutine
+
+subroutine Technik_Berechnen_Sortierung( ref( zahlen ) , ref( zahlenIndex ) )
+	call Technik_Berechnen_SortierungMitPlatz( ref( zahlen ) , ref( zahlenIndex ) , ref( null ) )
+end subroutine
+
+subroutine Technik_Berechnen_SortierungMitPlatz( ref( zahlen ) , ref( zahlenIndex ) , ref( zahlenPlatz ) )
+	rem zahlenIndex[] (Welchen Index hat die i.-groesste Zahl?), zahlenPlatz[] (Die wievielt-groesste Zahl (0+) ist die von Index i?)
+	sortAnzahl = zahlen[?]
+	dim zahlenPlatz(sortAnzahl)
+	dim zahlenIndex(sortAnzahl)
+	for i = 0 to sortAnzahl - 1
+		zahlenIndex[i] = i
+	next i
+	if sortAnzahl > 1 then
+		for i = 0 to sortAnzahl - 2
+			for j = i to sortAnzahl - 1
+				if zahlen[zahlenIndex[i]] < zahlen[zahlenIndex[j]] then
+					kleinererIndex = zahlenIndex[i]
+					zahlenIndex[i] = zahlenIndex[j]
+					zahlenIndex[j] = kleinererIndex
+				endif
+			next j
+		next i
+	endif
+	for i = 0 to sortAnzahl - 1
+		zahlenPlatz[zahlenIndex[i]] = i
+	next i
+end subroutine
+

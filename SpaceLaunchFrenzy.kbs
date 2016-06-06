@@ -6,6 +6,7 @@ rem call Daten_Setup()
 call Daten_SetupDummy()
 
 while true
+	runde++
 	call Interaktion_Auftragsvergabe()
 	call Interaktion_Auftragsdurchfuehrung()
 	call Interaktion_Raketenbau()

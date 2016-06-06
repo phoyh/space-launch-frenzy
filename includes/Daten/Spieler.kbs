@@ -97,3 +97,7 @@ function Spieler_IndexBesteRaketeFuerNachfragenart(spi, nai)
 	next eri
 	return besterRi
 end function
+
+subroutine Spieler_FundingEntgegennehmen(spi, geld)
+	Spieler_Geld[spi] += geld
+end subroutine

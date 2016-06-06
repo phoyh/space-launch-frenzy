@@ -1,5 +1,99 @@
 subroutine Interaktion_Funding()
 	for spi = 0 to Spieler_Anzahl - 1
-		Spieler_Geld[spi] += SPIELER_RUNDENGELD
+		call Spieler_FundingEntgegennehmen(spi, SPIELER_RUNDENGELD)
 	next spi
+	if runde % QUIZ_ALLE_X_RUNDEN = 0 then
+		call Interaktion_Quiz()
+	endif
+end subroutine
+
+subroutine Interaktion_Quiz()
+	titel$ = ""
+	platzSpi = 0
+	platzWertText$ = ""
+	redim titelBisher$(FRAGEN_PRO_QUIZ)
+	for fr = 0 to FRAGEN_PRO_QUIZ - 1
+		hatNeueFrage = false
+		while not hatNeueFrage
+			call Statistik_NimmZufaellig(ref(titel$), ref(platzSpi), ref(platzWertText$))
+			hatNeueFrage = true
+			if fr > 0 then
+				for tb = 0 to fr - 1
+					if titelBisher$[tb] = titel$ then
+						hatNeueFrage = false
+					endif
+				next tb
+			endif
+		end while
+		titelBisher$[fr] = titel$
+		call Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$))
+	next fr
+end subroutine
+	
+subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$))
+	preisgeld = QUIZ_FUNDING
+	quizGewinnerIndex = -1
+	redim istErraterDraussen(Spieler_Anzahl)
+	redim istKandidatDraussen(Spieler_Anzahl)
+	zuErratenSpi = platzSpi[0]
+	call Interaktion_QuizKopf(preisgeld, titel$)
+	input "Bei Return geht's los", a$
+	pauseTicks = 2
+	letzterKandidatIndex = -1
+	uebrigeKandidaten = Spieler_Anzahl
+	while quizGewinnerIndex = -1
+		kandidatIndex = -1
+		while kandidatIndex = -1 or (kandidatIndex = letzterKandidatIndex and uebrigeKandidaten > 1)
+			kandidatIndex = int(rand * Spieler_Anzahl)
+			if istKandidatDraussen[kandidatIndex] then
+				kandidatIndex = -1
+			endif
+		end while
+		letzterKandidatIndex = kandidatIndex
+		call Interaktion_QuizKopf(preisgeld, titel$)
+		print Spieler_Name$[kandidatIndex]
+		ticksUebrig = pauseTicks
+		while ticksUebrig > 0
+			pause 0.05
+			ticksUebrig--
+			erraterIndex = Spieler_IndexFuerKey(key)
+			if erraterIndex <> -1 then
+				if istErraterDraussen[erraterIndex] then
+					erraterIndex = -1
+				else
+					ticksUebrig = 0
+				endif
+			endif
+		end while
+		pauseTicks++
+		if erraterIndex <> -1 then
+			istErraterDraussen[erraterIndex] = true
+			istKandidatDraussen[kandidatIndex] = true
+			print
+			print upper(Spieler_Name$[erraterIndex]) + " meint die Antwort ist " + Spieler_Name$[kandidatIndex] + "..."
+			if kandidatIndex = zuErratenSpi then
+				quizGewinnerIndex = erraterIndex
+				call Technik_Echo("Die Antwort ist RICHTIG!")
+				print
+				print "Details:"
+				for pli = 0 to Spieler_Anzahl - 1
+					print "" + (pli + 1) + ". " + Spieler_Name$[platzSpi[pli]] + ": " + platzWertText$[pli]
+				next pli
+				input a$
+			else
+				uebrigeKandidaten--
+				call Technik_Echo("Die Antwort ist FALSCH!")
+				call Technik_Echo("")
+			endif
+		endif
+	end while
+	call Spieler_FundingEntgegennehmen(quizGewinnerIndex, preisgeld)
+end subroutine
+
+subroutine Interaktion_QuizKopf(preisgeld, titel$)
+	cls
+	print "Funding " + preisgeld + "M fuer folgende Frage:"
+	print titel$
+	print "===================================="
+	print
 end subroutine

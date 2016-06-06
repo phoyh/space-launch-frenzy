@@ -1,0 +1,85 @@
+global STATISTIK_ANZAHL
+STATISTIK_ANZAHL = 5
+
+subroutine Statistik_NimmZufaellig(ref(titel$), ref(platzSpi), ref(platzWertText$))
+	titel$ = ""
+	redim spielerWert(Spieler_Anzahl)
+	redim spielerWertText$(Spieler_Anzahl)
+	versuche = 0
+	while titel$ = ""
+		statIndex = int(rand * STATISTIK_ANZAHL)
+		call Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
+		if rand < 0.5 then
+			titel$ = titelMax$
+		else
+			titel$ = titelMin$
+			for pli = 0 to Spieler_Anzahl - 1
+				spielerWert[pli] = -spielerWert[pli]
+			next pli
+		endif
+		if versuche < 100 then
+			besterWert = -10000000
+			istBesterDoppelt = false
+			for spi = 0 to Spieler_Anzahl - 1
+				if spielerWert[spi] = besterWert then
+					istBesterDoppelt = true
+				endif
+				if spielerWert[spi] > besterWert then
+					besterWert = spielerWert[spi]
+					istBesterDoppelt = false
+				endif
+			next spi
+			if istBesterDoppelt then
+				titel$ = ""
+			endif
+		endif
+	end while
+	call Technik_Berechnen_Sortierung(ref(spielerWert), ref(platzSpi))
+	redim platzWertText$(Spieler_Anzahl)
+	for pli = 0 to Spieler_Anzahl - 1
+		platzWertText$[pli] = spielerWertText$[platzSpi[pli]]
+	next pli
+end subroutine
+
+subroutine Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
+	if statIndex = 0 then
+		titelMax$ = "Wer hat am meisten Geld?"
+		titelMin$ = "Wer hat am wenigsten Geld?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Spieler_Geld[spi]
+			spielerWertText$[spi] = "" + Spieler_Geld[spi] + "M"
+		next spi
+	endif
+	if statIndex = 1 then
+		titelMax$ = "Wer hat am meisten Raketen?"
+		titelMin$ = "Wer hat am wenigsten Raketen?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Spieler_RaketenAnzahl(spi)
+			spielerWertText$[spi] = "" + spielerWert[spi]
+		next spi
+	endif
+	if statIndex = 2 then
+		titelMax$ = "Wer hat die beste Technologie fuer Zuverlaessigkeit?"
+		titelMin$ = "Wer hat die schlechteste Technologie fuer Zuverlaessigkeit?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Spieler_Zuverlaessigkeit[spi]
+			spielerWertText$[spi] = "Stufe " + spielerWert[spi]
+		next spi
+	endif
+	if statIndex = 3 then
+		titelMax$ = "Wer hat die beste Technologie fuer Wiederverwendbarkeit?"
+		titelMin$ = "Wer hat die schlechteste Technologie fuer Wiederverwendbarkeit?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Spieler_Wiederverwendbarkeit[spi]
+			spielerWertText$[spi] = "Stufe " + spielerWert[spi]
+		next spi
+	endif
+	if statIndex = 4 then
+		titelMax$ = "Wer hat die beste Technologie fuer Effizienz?"
+		titelMin$ = "Wer hat die schlechteste Technologie fuer Effizienz?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Spieler_Effizienz[spi]
+			spielerWertText$[spi] = "Stufe " + spielerWert[spi]
+		next spi
+	endif
+end subroutine

@@ -68,3 +68,6 @@ global Rakete_Effizienz
 dim Rakete_Effizienz(RAKETE_MAX_ANZAHL)
 global Rakete_BenoetigtInstandsetzung
 dim Rakete_BenoetigtInstandsetzung(RAKETE_MAX_ANZAHL)
+
+global runde
+runde = 0
