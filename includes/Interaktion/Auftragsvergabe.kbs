@@ -20,6 +20,7 @@ subroutine Interaktion_Auktion(ni)
 	for spi = 0 to Spieler_Anzahl - 1
 		ri = Spieler_IndexBesteRaketeFuerNachfragenart(spi, nai)
 		if ri <> -1 then
+			call Spieler_AuktionTeilnehmen(spi)
 			zugelasseneSpielerAnzahl++
 		endif
 		spielerGebotRakete[spi] = ri
@@ -70,14 +71,13 @@ subroutine Interaktion_Auktion(ni)
 				gebot -= GEBOT_INTERVALL
 			endif
 			aktuellGebotSpielerIndex = gebotSpielerIndex
+			call Spieler_GebotAbgeben(aktuellGebotSpielerIndex)
 		endif
 	end while
-	if aktuellGebotSpielerIndex <> -1 then 
-		Nachfrage_RaketeIndex[ni] = spielerGebotRakete[aktuellGebotSpielerIndex]
-		Nachfrage_SiegGebot[ni] = gebot
+	if aktuellGebotSpielerIndex <> -1 then
+		call Nachfrage_RaketeSieggebot(ni, gebot, spielerGebotRakete[aktuellGebotSpielerIndex])
 	else
-		Nachfrage_RaketeIndex[ni] = -1
-		Nachfrage_SiegGebot[ni] = 0
+		call Nachfrage_KeinSieggebot(ni)
 	endif
 end subroutine
 

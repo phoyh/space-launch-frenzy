@@ -69,5 +69,32 @@ dim Rakete_Effizienz(RAKETE_MAX_ANZAHL)
 global Rakete_BenoetigtInstandsetzung
 dim Rakete_BenoetigtInstandsetzung(RAKETE_MAX_ANZAHL)
 
+global Statistik_AusgabenForschung
+dim Statistik_AusgabenForschung(SPIELER_MAX_ANZAHL)
+global Statistik_AusgabenRaketenbau
+dim Statistik_AusgabenRaketenbau(SPIELER_MAX_ANZAHL)
+global Statistik_AusgabenStrafe
+dim Statistik_AusgabenStrafe(SPIELER_MAX_ANZAHL)
+global Statistik_EinnahmenFunding
+dim Statistik_EinnahmenFunding(SPIELER_MAX_ANZAHL)
+global Statistik_SchubkraftGebaut
+dim Statistik_SchubkraftGebaut(SPIELER_MAX_ANZAHL)
+global Statistik_AuktionTeilnahmeAnzahl
+dim Statistik_AuktionTeilnahmeAnzahl(SPIELER_MAX_ANZAHL)
+global Statistik_AuktionGeboteAnzahl
+dim Statistik_AuktionGeboteAnzahl(SPIELER_MAX_ANZAHL)
+global Statistik_AuftragVolumen
+dim Statistik_AuftragVolumen(SPIELER_MAX_ANZAHL)
+global Statistik_RaketenstartAnzahl
+dim Statistik_RaketenstartAnzahl(SPIELER_MAX_ANZAHL)
+global Statistik_RaketenstartErfolg
+dim Statistik_RaketenstartErfolg(SPIELER_MAX_ANZAHL)
+global Statistik_LandungAnzahl
+dim Statistik_LandungAnzahl(SPIELER_MAX_ANZAHL)
+global Statistik_LandungErfolg
+dim Statistik_LandungErfolg(SPIELER_MAX_ANZAHL)
+global Statistik_Anzahl
+Statistik_Anzahl = 0
+
 global runde
 runde = 0

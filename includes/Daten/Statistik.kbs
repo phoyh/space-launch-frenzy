@@ -1,13 +1,10 @@
-global STATISTIK_ANZAHL
-STATISTIK_ANZAHL = 5
-
 subroutine Statistik_NimmZufaellig(ref(titel$), ref(platzSpi), ref(platzWertText$))
 	titel$ = ""
 	redim spielerWert(Spieler_Anzahl)
 	redim spielerWertText$(Spieler_Anzahl)
 	versuche = 0
 	while titel$ = ""
-		statIndex = int(rand * STATISTIK_ANZAHL)
+		statIndex = int(rand * Statistik_Anzahl)
 		call Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
 		if rand < 0.5 then
 			titel$ = titelMax$
@@ -42,7 +39,8 @@ subroutine Statistik_NimmZufaellig(ref(titel$), ref(platzSpi), ref(platzWertText
 end subroutine
 
 subroutine Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
-	if statIndex = 0 then
+	Statistik_Anzahl = 0
+	if statIndex = Statistik_Anzahl++ then
 		titelMax$ = "Wer hat am meisten Geld?"
 		titelMin$ = "Wer hat am wenigsten Geld?"
 		for spi = 0 to Spieler_Anzahl - 1
@@ -50,7 +48,7 @@ subroutine Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(sp
 			spielerWertText$[spi] = "" + Spieler_Geld[spi] + "M"
 		next spi
 	endif
-	if statIndex = 1 then
+	if statIndex = Statistik_Anzahl++ then
 		titelMax$ = "Wer hat am meisten Raketen?"
 		titelMin$ = "Wer hat am wenigsten Raketen?"
 		for spi = 0 to Spieler_Anzahl - 1
@@ -58,7 +56,7 @@ subroutine Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(sp
 			spielerWertText$[spi] = "" + spielerWert[spi]
 		next spi
 	endif
-	if statIndex = 2 then
+	if statIndex = Statistik_Anzahl++ then
 		titelMax$ = "Wer hat die beste Technologie fuer Zuverlaessigkeit?"
 		titelMin$ = "Wer hat die schlechteste Technologie fuer Zuverlaessigkeit?"
 		for spi = 0 to Spieler_Anzahl - 1
@@ -66,7 +64,7 @@ subroutine Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(sp
 			spielerWertText$[spi] = "Stufe " + spielerWert[spi]
 		next spi
 	endif
-	if statIndex = 3 then
+	if statIndex = Statistik_Anzahl++ then
 		titelMax$ = "Wer hat die beste Technologie fuer Wiederverwendbarkeit?"
 		titelMin$ = "Wer hat die schlechteste Technologie fuer Wiederverwendbarkeit?"
 		for spi = 0 to Spieler_Anzahl - 1
@@ -74,12 +72,106 @@ subroutine Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(sp
 			spielerWertText$[spi] = "Stufe " + spielerWert[spi]
 		next spi
 	endif
-	if statIndex = 4 then
+	if statIndex = Statistik_Anzahl++ then
 		titelMax$ = "Wer hat die beste Technologie fuer Effizienz?"
 		titelMin$ = "Wer hat die schlechteste Technologie fuer Effizienz?"
 		for spi = 0 to Spieler_Anzahl - 1
 			spielerWert[spi] = Spieler_Effizienz[spi]
 			spielerWertText$[spi] = "Stufe " + spielerWert[spi]
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat am meisten in der Forschung ausgegeben?"
+		titelMin$ = "Wer hat am wenigsten in der Forschung ausgegeben?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_AusgabenForschung[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi] + "M"
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat am meisten fuer den Bau von Raketen ausgegeben?"
+		titelMin$ = "Wer hat am wenigsten fuer den Bau von Raketen ausgegeben?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_AusgabenRaketenbau[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi] + "M"
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat am meisten Strafe fuer missglueckte Starts bezahlen muessen?"
+		titelMin$ = "Wer hat am wenigsten Strafe fuer missglueckte Starts bezahlen muessen?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_AusgabenStrafe[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi] + "M"
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat am meisten Geld durch Funding erhalten?"
+		titelMin$ = "Wer hat am wenigsten Geld durch Funding erhalten?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_EinnahmenFunding[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi] + "M"
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wessen bisher gebaute Raketen haben insgesamt am meisten Schubkraft?"
+		titelMin$ = "Wessen bisher gebaute Raketen haben insgesamt am wenigsten Schubkraft?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_SchubkraftGebaut[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi] + " MN"
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat am haeufigsten an Auftragsvergaben teilgenommen?"
+		titelMin$ = "Wer hat am seltesten an Auftragsvergaben teilgenommen?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_AuktionTeilnahmeAnzahl[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi]
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat die meisten Gebote bei Auktionen abgegeben?"
+		titelMin$ = "Wer hat die wenigsten Gebote bei Auktionen abgegeben?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_AuktionGeboteAnzahl[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi]
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat insgesamt den hoechsten Auftragswert vergeben bekommen?"
+		titelMin$ = "Wer hat insgesamt den niedrigsten Auftragswert vergeben bekommen?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_AuftragVolumen[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi] + "M"
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat die meisten Raketen gestartet?"
+		titelMin$ = "Wer hat die wenigsten Raketen gestartet?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = Statistik_RaketenstartAnzahl[spi]
+			spielerWertText$[spi] = "" + spielerWert[spi]
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat die hoechste Zuverlaessigkeit bei der Auftragsdurchfuehrung?"
+		titelMin$ = "Wer hat die geringste Zuverlaessigkeit bei der Auftragsdurchfuehrung?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = 0
+			if Statistik_RaketenstartAnzahl[spi] > 0 then
+				spielerWert[spi] = Statistik_RaketenstartErfolg[spi] / Statistik_RaketenstartAnzahl[spi]
+			endif
+			spielerWertText$[spi] = Technik_Prozent$(spielerWert[spi])
+		next spi
+	endif
+	if statIndex = Statistik_Anzahl++ then
+		titelMax$ = "Wer hat die hoechste Erfolgsrate bei Landungen?"
+		titelMin$ = "Wer hat die geringste Erfolgsrate bei Landungen?"
+		for spi = 0 to Spieler_Anzahl - 1
+			spielerWert[spi] = 0
+			if Statistik_LandungAnzahl[spi] > 0 then
+				spielerWert[spi] = Statistik_LandungErfolg[spi] / Statistik_LandungAnzahl[spi]
+			endif
+			spielerWertText$[spi] = Technik_Prozent$(spielerWert[spi])
 		next spi
 	endif
 end subroutine

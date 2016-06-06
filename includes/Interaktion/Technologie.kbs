@@ -22,7 +22,7 @@ function Interaktion_FrageStufenErhoehen(spi)
 			print "Kein Geld!"
 			a = -1
 		else
-			Spieler_Geld[spi] -= kosten
+			call Spieler_ForschungBezahlen(spi, kosten)
 		endif
 	endwhile
 	return a

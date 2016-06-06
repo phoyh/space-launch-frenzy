@@ -9,3 +9,14 @@ function Nachfrage_AnzahlVergeben()
 	endif
 	return result
 end function
+
+subroutine Nachfrage_RaketeSieggebot(ni, gebot, ri)
+	Nachfrage_RaketeIndex[ni] = ri
+	Nachfrage_SiegGebot[ni] = gebot
+	Statistik_AuftragVolumen[Rakete_SpielerIndex[ri]] += gebot 
+end subroutine
+
+subroutine Nachfrage_KeinSieggebot(ni)
+	Nachfrage_RaketeIndex[ni] = -1
+	Nachfrage_SiegGebot[ni] = 0
+end subroutine

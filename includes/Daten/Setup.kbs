@@ -2,6 +2,7 @@ subroutine Daten_Setup()
 	call Spieler_Init()
 	call Nachfrageart_Init()
 	call Raketenart_Init()
+	call Statistik_Init()
 end subroutine
 
 subroutine Daten_SetupDummy()
@@ -81,4 +82,17 @@ subroutine Raketenart_Init()
 	Raketenart_Anfangskosten[Raketenart_Anzahl] = 500
 	Raketenart_EffizienzLevel[Raketenart_Anzahl] = 30
 	Raketenart_Anzahl++
+end subroutine
+
+subroutine Statistik_Init()
+	titelMax$ = ""
+	titelMin$ = ""
+	spielerWert = 0
+	spielerWertText$ = ""
+	call Statistik_Evaluiere(-1, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
+	
+	rem Test Statistikevaluationen
+	for si = 0 to Statistik_Anzahl - 1
+		call Statistik_Evaluiere(si, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
+	next si
 end subroutine

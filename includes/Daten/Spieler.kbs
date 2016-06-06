@@ -20,14 +20,20 @@ subroutine Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
 	ri = Nachfrage_RaketeIndex[ni]
 	spi = Rakete_SpielerIndex[ri]
 	nai = Nachfrage_ArtIndex[ni]
+	Statistik_RaketenstartAnzahl[spi]++
 	if istNutzlastErfolg then
 		Spieler_Geld[spi] += Nachfrage_SiegGebot[ni]
+		Statistik_RaketenstartErfolg[spi]++
+		Statistik_LandungAnzahl[spi]++
 		call Nachfrageart_FreischaltungBeiErfolg(nai)
 	else
-		Spieler_Geld[spi] -= Nachfrageart_Strafe[nai]
+		kosten = Nachfrageart_Strafe[nai]
+		Spieler_Geld[spi] -= kosten
+		Statistik_AusgabenStrafe[spi] += kosten
 	endif
 	if istLandungErfolg then
 		Rakete_BenoetigtInstandsetzung[ri] = true
+		Statistik_LandungErfolg[spi]++
 	else
 		call Rakete_Loeschen(ri)
 	endif
@@ -68,7 +74,10 @@ function Spieler_TextNeueRakete$(spi, rai)
 end function
 
 subroutine Spieler_Raketenbau(spi, rai)
-	Spieler_Geld[spi] -= Spieler_KostenRaketenbau(spi, rai)
+	kosten = Spieler_KostenRaketenbau(spi, rai)
+	Spieler_Geld[spi] -= kosten
+	Statistik_AusgabenRaketenbau[spi] += kosten
+	Statistik_SchubkraftGebaut[spi] += Raketenart_Schubkraft[rai]
 	call Rakete_Hinzufuegen(rai, spi)
 end subroutine
 
@@ -100,4 +109,18 @@ end function
 
 subroutine Spieler_FundingEntgegennehmen(spi, geld)
 	Spieler_Geld[spi] += geld
+	Statistik_EinnahmenFunding[spi] += geld
+end subroutine
+
+subroutine Spieler_ForschungBezahlen(spi, kosten)
+	Spieler_Geld[spi] -= kosten
+	Statistik_AusgabenForschung[spi] += kosten
+end subroutine
+
+subroutine Spieler_AuktionTeilnehmen(spi)
+	Statistik_AuktionTeilnahmeAnzahl[spi]++
+end subroutine
+
+subroutine Spieler_GebotAbgeben(spi)
+	Statistik_AuktionGeboteAnzahl[spi]++
 end subroutine
