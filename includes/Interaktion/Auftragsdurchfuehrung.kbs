@@ -12,7 +12,7 @@ subroutine Interaktion_Auftragsdurchfuehrung()
 			reuseWert = kosten - Rakete_KostenInstandsetzung(ri)
 			gebot = Nachfrage_SiegGebot[ni]
 			cls
-			print Spieler_Name$[spi] + " bereitet Start von " + Raketenart_Name$[Rakete_ArtIndex[ri]] + " vor..."
+			print Spieler_Name$[spi] + " bereitet Start von " + Raketenart_Name$[Rakete_ArtIndex[ri]] + " fuer " + Nachfrageart_Name$[Nachfrage_ArtIndex[ni]] + " vor..."
 			call Technik_Echo("Rakete kostete " + kosten + "M")
 			call Technik_Echo("Die Rakete startet...")
 			if rand > zuverlaessigkeit then
@@ -32,7 +32,6 @@ subroutine Interaktion_Auftragsdurchfuehrung()
 				endif
 			endif
 			call Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
-			call Technik_Echo("...an Geld verbleiben also " + Spieler_Geld[spi] + "M.")
 			input a$
 		endif
 	next ni

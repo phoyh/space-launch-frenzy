@@ -93,8 +93,8 @@ end subroutine
 subroutine Statistik_Init()
 	titelMax$ = ""
 	titelMin$ = ""
-	spielerWert = 0
-	spielerWertText$ = ""
+	redim spielerWert(Spieler_Anzahl)
+	redim spielerWertText$(Spieler_Anzahl)
 	call Statistik_Evaluiere(-1, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
 	
 	rem Test Statistikevaluationen

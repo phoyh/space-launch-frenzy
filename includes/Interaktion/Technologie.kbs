@@ -1,7 +1,7 @@
 subroutine Interaktion_Technologie()
 	for spi = 0 to Spieler_Anzahl - 1
 		cls
-		print "Technologie " + Spieler_Name$[spi]
+		print "Technologie " + upper(Spieler_Name$[spi])
 		print "================================="
 		print
 		print "Zuverlaessigkeit: Stufe " + Spieler_Zuverlaessigkeit[spi]

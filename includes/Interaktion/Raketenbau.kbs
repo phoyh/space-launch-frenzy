@@ -3,7 +3,7 @@ subroutine Interaktion_Raketenbau()
 		gewaehlteOption = -1
 		while gewaehlteOption <> 0 
 			cls
-			print "Raketenbau " + Spieler_Name$[spi] + " - Geld " + Spieler_Geld[spi] + "M"
+			print "Raketenbau " + upper(Spieler_Name$[spi]) + " - Geld " + Spieler_Geld[spi] + "M"
 			print "==============================="
 			print
 			anzahlInstandzusetzende = 0
