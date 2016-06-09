@@ -1,4 +1,4 @@
-subroutine Statistik_NimmZufaellig(ref(titel$), ref(platzSpi), ref(platzWertText$))
+subroutine Statistik_NimmZufaellig(ref(statIndex), ref(titel$), ref(platzSpi), ref(platzWertText$))
 	titel$ = ""
 	redim spielerWert(Spieler_Anzahl)
 	redim spielerWertText$(Spieler_Anzahl)

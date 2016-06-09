@@ -67,7 +67,7 @@ subroutine Nachfrageart_Init()
 	Nachfrageart_Anzahl++
 	Nachfrageart_Name$[Nachfrageart_Anzahl] = "ISS Shuttle"
 	Nachfrageart_Anfangsgebot[Nachfrageart_Anzahl] = 300
-	Nachfrageart_Strafe[Nachfrageart_Anzahl] = 100
+	Nachfrageart_Strafe[Nachfrageart_Anzahl] = 150
 	Nachfrageart_BenoetigteSchubkraft[Nachfrageart_Anzahl] = 5
 	Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_Anzahl] = 6
 	Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_Anzahl] = 40

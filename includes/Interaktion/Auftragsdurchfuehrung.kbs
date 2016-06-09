@@ -11,27 +11,60 @@ subroutine Interaktion_Auftragsdurchfuehrung()
 			kosten = Rakete_Kosten(ri)
 			reuseWert = kosten - Rakete_KostenInstandsetzung(ri)
 			gebot = Nachfrage_SiegGebot[ni]
+			
+			randZielErreicht = rand
+			randLandung = rand
+			istNutzlastErfolg = false
+			wurdeLandungVersucht = false
+			istLandungErfolg = false
 			cls
 			print Spieler_Name$[spi] + " bereitet Start von " + Raketenart_Name$[Rakete_ArtIndex[ri]] + " fuer " + Nachfrageart_Name$[Nachfrage_ArtIndex[ni]] + " vor..."
-			call Technik_Echo("Rakete kostete " + kosten + "M")
+			call Technik_Echo("Die Wissenschaftler schaetzen die Zuverlaessigkeit bei " + Technik_Prozent$(zuverlaessigkeit) + " und Wiederverwendbarkeit bei " + Technik_Prozent$(wiederverwendbarkeit) + " ein...")
+			call Technik_Echo("...der Bau der Rakete kostete " + kosten + "M.")
 			call Technik_Echo("Die Rakete startet...")
-			if rand > zuverlaessigkeit then
-				call Technik_Echo("Rakete ist explodiert...")
-				call Technik_Echo("Strafzahlung von " + Nachfrageart_Strafe[nai] + "M...")
+			if randZielErreicht * 0.4 > zuverlaessigkeit then
+				call Technik_Echo("...und zerbricht unter dem atmosphaerischen Druck!")
 			else
-				istNutzlastErfolg = true
-				call Technik_Echo(Nachfrageart_Name$[nai] + " ist am Ziel angekommen...")
-				call Technik_Echo("Praemie von " + gebot + "M erhalten...")
-				call Technik_Echo("Erste Raketenstufe bereit zur Landung...")
-				if rand > wiederverwendbarkeit then
-					call Technik_Echo("Explosion...")
+				call Technik_Echo("...haelt maximalem atmosphaerischem Druck stand.")
+				call Technik_Echo("Trennung von 2. Stufe steht bevor...")
+				if randZielErreicht * 0.8 > zuverlaessigkeit then
+					call Technik_Echo("...Explosion!")
 				else
-					istLandungErfolg = true
-					call Technik_Echo("Landung erfolgreich.")
-					call Technik_Echo("Rakete im Wert von " + reuseWert + "M zurueckbekommen...")
+					call Technik_Echo("...erfolgreich!")
+					call Technik_Echo("Die erste Stufe kehrt wieder in Richtung Erde zurueck...")
+					wurdeLandungVersucht = true
+					if randLandung * 0.3 > wiederverwendbarkeit then
+						call Technik_Echo("...kann aber nicht auf Landeplatz zurueckkehren und faellt in das Meer!")
+					else
+						call Technik_Echo("...naehert sich dem Landeplatz...")
+						if randLandung * 0.7 > wiederverwendbarkeit then
+							call Technik_Echo("...und kracht zu Boden - Explosion!")
+						else
+							call Technik_Echo("...landet...")
+							if randLandung > wiederverwendbarkeit then
+								call Technik_Echo("...und kippt um - Explosion!")
+							else
+								call Technik_Echo("...und bleibt sicher stehen!")
+								call Technik_Echo("Rakete im Wert von " + reuseWert + "M zurueckbekommen...")
+								istLandungErfolg = true
+							endif
+						endif
+					endif
+					call Technik_Echo("Die 2. Stufe bereitet sich auf Freigabe von " + Nachfrageart_Name$[Nachfrage_ArtIndex[ni]] + " vor..")
+					if randZielErreicht > zuverlaessigkeit then
+						call Technik_Echo("...die Abkopplung hat aber nicht funktioniert!")
+					else
+						istNutzlastErfolg = true
+						call Technik_Echo("...Erfolg!")
+						call Technik_Echo("Praemie von " + gebot + "M erhalten!")
+					endif
 				endif
 			endif
-			call Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
+			if randZielErreicht > zuverlaessigkeit then
+				call Technik_Echo("Strafzahlung von " + Nachfrageart_Strafe[nai] + "M!")
+			endif
+			
+			call Spieler_Auftragsergebnis(ni, istNutzlastErfolg, wurdeLandungVersucht, istLandungErfolg)
 			input a$
 		endif
 	next ni

@@ -4,3 +4,68 @@ subroutine Nachfrageart_FreischaltungBeiErfolg(nai)
 		Nachfrageart_VerfuegbarMaxSchubkraft = Nachfrageart_BenoetigteSchubkraft[Nachfrageart_VerfuegbarAnzahl - 1]
 	endif
 end subroutine
+
+function Nachfrageart_IndexFuerMaxZuverlaessigkeitLevel()
+	level = -1
+	result = -1
+	for nai = 0 to Nachfrageart_VerfuegbarAnzahl - 1
+		if Nachfrageart_ZuverlaessigkeitLevel[nai] > level then
+			level = Nachfrageart_ZuverlaessigkeitLevel[nai]
+			result = nai
+		endif
+	next nai
+	return result
+end function
+
+function Nachfrageart_IndexFuerMinZuverlaessigkeitLevel()
+	level = 100000000000
+	result = -1
+	for nai = 0 to Nachfrageart_VerfuegbarAnzahl - 1
+		if Nachfrageart_ZuverlaessigkeitLevel[nai] < level then
+			level = Nachfrageart_ZuverlaessigkeitLevel[nai]
+			result = nai
+		endif
+	next nai
+	return result
+end function
+
+function Nachfrageart_MaxZuverlaessigkeitLevel()
+	return Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_IndexFuerMaxZuverlaessigkeitLevel()]
+end function
+
+function Nachfrageart_MinZuverlaessigkeitLevel()
+	return Nachfrageart_ZuverlaessigkeitLevel[Nachfrageart_IndexFuerMinZuverlaessigkeitLevel()]
+end function
+
+function Nachfrageart_IndexFuerMaxWiederverwendbarkeitLevel()
+	level = -1
+	result = -1
+	for nai = 0 to Nachfrageart_VerfuegbarAnzahl - 1
+		if Nachfrageart_WiederverwendbarkeitLevel[nai] > level then
+			level = Nachfrageart_WiederverwendbarkeitLevel[nai]
+			result = nai
+		endif
+	next nai
+	return result
+end function
+
+function Nachfrageart_IndexFuerMinWiederverwendbarkeitLevel()
+	level = 100000000000
+	result = -1
+	for nai = 0 to Nachfrageart_VerfuegbarAnzahl - 1
+		if Nachfrageart_WiederverwendbarkeitLevel[nai] < level then
+			level = Nachfrageart_WiederverwendbarkeitLevel[nai]
+			result = nai
+		endif
+	next nai
+	return result
+end function
+
+function Nachfrageart_MaxWiederverwendbarkeitLevel()
+	return Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_IndexFuerMaxWiederverwendbarkeitLevel()]
+end function
+
+function Nachfrageart_MinWiederverwendbarkeitLevel()
+	return Nachfrageart_WiederverwendbarkeitLevel[Nachfrageart_IndexFuerMinWiederverwendbarkeitLevel()]
+end function
+

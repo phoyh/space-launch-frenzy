@@ -8,24 +8,25 @@ subroutine Interaktion_Funding()
 end subroutine
 
 subroutine Interaktion_Quiz()
+	statIndex = 0
 	titel$ = ""
 	platzSpi = 0
 	platzWertText$ = ""
-	redim titelBisher$(FRAGEN_PRO_QUIZ)
+	redim statIndexBisher(FRAGEN_PRO_QUIZ)
 	for fr = 0 to FRAGEN_PRO_QUIZ - 1
 		hatNeueFrage = false
 		while not hatNeueFrage
-			call Statistik_NimmZufaellig(ref(titel$), ref(platzSpi), ref(platzWertText$))
+			call Statistik_NimmZufaellig(ref(statIndex), ref(titel$), ref(platzSpi), ref(platzWertText$))
 			hatNeueFrage = true
 			if fr > 0 then
 				for tb = 0 to fr - 1
-					if titelBisher$[tb] = titel$ then
+					if statIndexBisher[tb] = statIndex then
 						hatNeueFrage = false
 					endif
 				next tb
 			endif
 		end while
-		titelBisher$[fr] = titel$
+		statIndexBisher[fr] = statIndex
 		call Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$))
 	next fr
 end subroutine
@@ -53,6 +54,14 @@ subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$)
 		call Interaktion_QuizKopf(preisgeld, titel$)
 		print Spieler_Name$[kandidatIndex]
 		ticksUebrig = pauseTicks
+		if uebrigeKandidaten = 1 then
+			ticksUebrig = 0
+			for eri = 0 to Spieler_Anzahl - 1
+				if not istErraterDraussen[eri] then
+					erraterIndex = eri
+				endif
+			next eri 
+		endif
 		while ticksUebrig > 0
 			pause 0.05
 			ticksUebrig--
@@ -73,7 +82,11 @@ subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$)
 			print upper(Spieler_Name$[erraterIndex]) + " meint die Antwort ist " + Spieler_Name$[kandidatIndex] + "..."
 			if kandidatIndex = zuErratenSpi then
 				quizGewinnerIndex = erraterIndex
-				call Technik_Echo("Die Antwort ist RICHTIG!")
+				if uebrigeKandidaten > 1 then
+					call Technik_Echo("Die Antwort ist RICHTIG!")
+				else
+					print "Die Antwort ist RICHTIG!"
+				endif
 				print
 				print "Details:"
 				for pli = 0 to Spieler_Anzahl - 1

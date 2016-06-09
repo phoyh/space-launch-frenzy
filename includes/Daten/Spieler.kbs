@@ -16,7 +16,7 @@ function Spieler_WiederverwendbarkeitFuerNachfrageart(spi, nai)
 	return Berechnen_Wiederverwendbarkeit(Spieler_Wiederverwendbarkeit[spi], Nachfrageart_WiederverwendbarkeitLevel[nai])
 end function
 
-subroutine Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
+subroutine Spieler_Auftragsergebnis(ni, istNutzlastErfolg, wurdeLandungVersucht, istLandungErfolg)
 	ri = Nachfrage_RaketeIndex[ni]
 	spi = Rakete_SpielerIndex[ri]
 	nai = Nachfrage_ArtIndex[ni]
@@ -24,12 +24,14 @@ subroutine Spieler_Auftragsergebnis(ni, istNutzlastErfolg, istLandungErfolg)
 	if istNutzlastErfolg then
 		Spieler_Geld[spi] += Nachfrage_SiegGebot[ni]
 		Statistik_RaketenstartErfolg[spi]++
-		Statistik_LandungAnzahl[spi]++
 		call Nachfrageart_FreischaltungBeiErfolg(nai)
 	else
 		kosten = Nachfrageart_Strafe[nai]
 		Spieler_Geld[spi] -= kosten
 		Statistik_AusgabenStrafe[spi] += kosten
+	endif
+	if wurdeLandungVersucht then
+		Statistik_LandungAnzahl[spi]++
 	endif
 	if istLandungErfolg then
 		Rakete_BenoetigtInstandsetzung[ri] = true

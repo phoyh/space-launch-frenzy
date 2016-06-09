@@ -3,13 +3,28 @@ function Rakete_TextOhneSpieler$(ri)
 end function
 
 function Rakete_TextOhneSpielerFuerKonfiguration$(rai, b, z, w, e)
+	zMin$ = Technik_Prozent$(Berechnen_Zuverlaessigkeit(z, Nachfrageart_MaxZuverlaessigkeitLevel()))
+	zMax$ = Technik_Prozent$(Berechnen_Zuverlaessigkeit(z, Nachfrageart_MinZuverlaessigkeitLevel()))
+	wMin$ = Technik_Prozent$(Berechnen_Wiederverwendbarkeit(w, Nachfrageart_MaxWiederverwendbarkeitLevel()))
+	wMax$ = Technik_Prozent$(Berechnen_Wiederverwendbarkeit(w, Nachfrageart_MinWiederverwendbarkeitLevel()))
+	
 	text$ = Raketenart_Name$[rai]
 	if b then
 		text$ = text$ + " (beschaedigt)" 
 	endif
 	text$ = text$ + ": "
-	text$ = text$ + "Zvl. " + z + " - "
-	text$ = text$ + "Wdv. " + w + " - "
+	text$ = text$ + "Zvl. " + z + " ( " 
+	text$ = text$ + zMin$
+	if zMin$ <> zMax$ then
+		text$ = text$ + " - "+ zMax$
+	endif
+	text$ = text$ + " ) *** "
+	text$ = text$ + "Wdv. " + w + " ( "
+	text$ = text$ + wMin$
+	if wMin$ <> wMax$ then
+		text$ = text$ + " - "+ wMax$
+	endif
+	text$ = text$ + " ) *** "
 	text$ = text$ + "Eff. " + e
 	return text$
 end function
