@@ -39,6 +39,7 @@ subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$)
 	zuErratenSpi = platzSpi[0]
 	call Interaktion_QuizKopf(preisgeld, titel$)
 	input "Bei Return geht's los", a$
+	call Technik_KeyLeeren()
 	pauseTicks = 2
 	letzterKandidatIndex = -1
 	uebrigeKandidaten = Spieler_Anzahl
@@ -97,6 +98,7 @@ subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$)
 				uebrigeKandidaten--
 				call Technik_Echo("Die Antwort ist FALSCH!")
 				call Technik_Echo("")
+				call Technik_KeyLeeren()
 			endif
 		endif
 	end while

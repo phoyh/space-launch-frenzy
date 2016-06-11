@@ -5,8 +5,24 @@ function Technik_Prozent$(zahl)
 	return "" + int(10000 * zahl) / 100 + "%" 
 end function
 
+subroutine Technik_KeyLeeren()
+	istLeer = false
+	while not istLeer
+		istLeer = true
+		for i = 0 to 19
+			if key <> 0 then
+				istLeer = false
+			endif
+		next i
+	end while
+end subroutine
+
 subroutine Technik_Echo(text$)
-	pause ECHO_DAUER
+	rem Escape beendet Pause
+	ticks = ECHO_DAUER / 0.1
+	while key <> 16777216 and ticks-- > 0
+		pause 0.05
+	end while
 	print text$
 end subroutine
 
