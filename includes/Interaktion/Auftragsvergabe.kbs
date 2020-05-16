@@ -41,10 +41,10 @@ subroutine Interaktion_Auktion(ni)
 		if aktuellGebotSpielerIndex = -1 then
 			print
 			if zugelasseneSpielerAnzahl = 0 then
-				input "Keiner kann eine Rakete zum Start bringen...", a$
+				a$ = Technik_Input$("Keiner kann eine Rakete zum Start bringen...")
 				uebrigeTicks = 0
 			else
-				input "Bei Return geht's los", a$
+				a$ = Technik_Input$("Bei Return geht's los")
 				print "...Start!";
 			endif
 		endif

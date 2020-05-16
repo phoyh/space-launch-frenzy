@@ -54,3 +54,104 @@ subroutine Technik_Berechnen_SortierungMitPlatz( ref( zahlen ) , ref( zahlenInde
 	next i
 end subroutine
 
+function Technik_Input$(p$)
+	r$ = ""
+	k = 0
+	lastChar = 0
+	isShift = false
+	accent = 0
+	print p$;
+	while k <> 16777220 and k <> 16777221 #RETURN
+		k = key
+		#if k <> 0 then print "(" + k + ")"
+		if k = 0 then
+			lastChar = 0
+		endif
+		if k <> lastChar and k <> 16777220 and k <> 16777221 and k <> 16781571 then #RETURN or AltGr
+			a$ = Technik_InputGetChar$(k, ref(isShift), ref(accent))
+			if a$ <> "" then
+				if a$ = chr(16777219) then #BACKSPACE
+					if length(r$) > 1 then
+						r$ = left(r$, length(r$) - 1)
+					else
+						r$ = ""
+					endif
+					print
+					print p$ + r$;
+				else
+					print a$;
+					r$ = r$ + a$
+				endif
+			endif
+		endif
+	endwhile
+	print
+	return r$
+endfunction
+
+function Technik_InputGetChar$(k, ref(isShift), ref(accent))
+	if k = 13 or k = 16777221 then #RETURN
+		return chr(13)
+	endif
+	if k = 16777248 then #SHIFT
+		isShift = true
+		return ""
+	endif
+	if k = 16781904 then #GRAVE
+		accent = 1
+		isShift = false
+		return ""
+	endif
+	if k = 16781905 then #EGU
+		accent = 2
+		isShift = false
+		return ""
+	endif
+	if k = 16781906 then #CIRCON
+		accent = 3
+		isShift = false
+		return ""
+	endif
+	if k = 16781911 then #UMLAUT
+		accent = 5
+		isShift = false
+		return ""
+	endif
+	a$ = Technik_InputDetermineChar$(k, isShift, accent)
+	if a$ = "ø" then a$ = "œ"
+	isShift = false
+	accent = 0
+	lastChar = k
+	return a$
+endsubroutine
+
+function Technik_InputDetermineChar$(k, isShift, accent)
+	if (k > 64 and k < 91) or (k > 191 and k < 221) then
+		if accent > 0 then
+			if k = 65 then k = 192
+			if k = 69 then k = 200
+			if k = 73 then k = 204
+			if k = 79 then k = 210
+			if k = 85 then k = 217
+			if accent = 5 then
+				if k = 200 or k = 204 or k = 217 then
+					k--
+				endif
+			endif
+			if k > 190 then
+				k += accent - 1
+			endif
+		endif
+		if not isShift then k += 32
+		return chr(k)
+	endif
+	if k = 32 and accent = 2 then
+		return "'"
+	endif
+	if (k < 64 and k > 31) or k = 161 or k = 191 or k = 223 or k > 10000 then
+		return chr(k)
+	endif
+	return ""
+endfunction
+
+

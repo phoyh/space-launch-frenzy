@@ -16,7 +16,7 @@ end subroutine
 function Interaktion_FrageStufenErhoehen(spi)
 	a = -1
 	while a = -1
-		input "Wie viel Stufen erhoehen (Geld: " + Spieler_Geld[spi] + "M) ? ", a
+		a = int(Technik_Input$("Wie viel Stufen erhoehen (Geld: " + Spieler_Geld[spi] + "M) ? "))
 		kosten = a * (a + 1) / 2
 		if kosten > Spieler_Geld[spi] and a <> 0 then
 			print "Kein Geld!"

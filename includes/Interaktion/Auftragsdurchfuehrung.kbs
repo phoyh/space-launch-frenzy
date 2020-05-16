@@ -65,7 +65,7 @@ subroutine Interaktion_Auftragsdurchfuehrung()
 			endif
 			
 			call Spieler_Auftragsergebnis(ni, istNutzlastErfolg, wurdeLandungVersucht, istLandungErfolg)
-			input a$
+			a$ = Technik_Input$("")
 		endif
 	next ni
 end subroutine

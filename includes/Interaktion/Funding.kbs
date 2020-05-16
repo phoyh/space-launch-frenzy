@@ -38,7 +38,7 @@ subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$)
 	redim istKandidatDraussen(Spieler_Anzahl)
 	zuErratenSpi = platzSpi[0]
 	call Interaktion_QuizKopf(preisgeld, titel$)
-	input "Bei Return geht's los", a$
+	a$ = Technik_Input$("Bei Return geht's los")
 	call Technik_KeyLeeren()
 	pauseTicks = 2
 	letzterKandidatIndex = -1
@@ -93,7 +93,7 @@ subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$)
 				for pli = 0 to Spieler_Anzahl - 1
 					print "" + (pli + 1) + ". " + Spieler_Name$[platzSpi[pli]] + ": " + platzWertText$[pli]
 				next pli
-				input a$
+				a$ = Technik_Input$("")
 			else
 				uebrigeKandidaten--
 				call Technik_Echo("Die Antwort ist FALSCH!")

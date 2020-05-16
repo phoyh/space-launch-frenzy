@@ -49,10 +49,10 @@ subroutine Interaktion_Raketenbau()
 			gewaehlteOption = -1
 			if optionAnzahl = 0 then
 				gewaehlteOption = 0
-				input "Nicht genuegend Geld...", a$
+				a$ = Technik_Input$("Nicht genuegend Geld...")
 			endif
 			while gewaehlteOption < 0 or gewaehlteOption > optionAnzahl or gewaehlteOption <> int(gewaehlteOption)
-				input "Auswahl (1-" + optionAnzahl + " oder Return): ", gewaehlteOption
+				gewaehlteOption = int(Technik_Input$("Auswahl (1-" + optionAnzahl + " oder Return): "))
 			end while
 			if gewaehlteOption > 0 then
 				optionIndex = 0
