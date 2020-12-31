@@ -106,7 +106,7 @@ subroutine Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$)
 end subroutine
 
 subroutine Interaktion_QuizKopf(preisgeld, titel$)
-	cls
+	call Interaktion_Screen()
 	print "Funding " + preisgeld + "M fuer folgende Frage:"
 	print titel$
 	print "===================================="

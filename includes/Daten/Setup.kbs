@@ -5,6 +5,7 @@ subroutine Daten_SetupMitOhneDummy(istMitDummy)
 	else
 		call Spieler_Init()
 	endif
+	call Daten_Setup_SpielEnde()
 	call Nachfrageart_Init()
 	call Raketenart_Init()
 	call Statistik_Init()
@@ -28,6 +29,11 @@ subroutine Spieler_Init_Dummy()
 	Spieler_GebotKey[Spieler_Anzahl] = 80
 	Spieler_Anzahl++
 end subroutine
+
+subroutine Daten_Setup_SpielEnde()
+	input "Zahl von Spielrunden (-1 fuer unbegrenzt): ", a
+	if a > 0 and int(a) = a then maxRunde = a
+endsubroutine
 
 subroutine Spieler_Init()
 	istFertig = false

@@ -98,3 +98,5 @@ Statistik_Anzahl = 0
 
 global runde
 runde = 0
+global maxRunde
+maxRunde = -1

@@ -17,7 +17,7 @@ subroutine Interaktion_Auftragsdurchfuehrung()
 			istNutzlastErfolg = false
 			wurdeLandungVersucht = false
 			istLandungErfolg = false
-			cls
+			call Interaktion_Screen()
 			print Spieler_Name$[spi] + " bereitet Start von " + Raketenart_Name$[Rakete_ArtIndex[ri]] + " fuer " + Nachfrageart_Name$[Nachfrage_ArtIndex[ni]] + " vor..."
 			call Technik_Echo("Die Wissenschaftler schaetzen die Zuverlaessigkeit bei " + Technik_Prozent$(zuverlaessigkeit) + " und Wiederverwendbarkeit bei " + Technik_Prozent$(wiederverwendbarkeit) + " ein...")
 			call Technik_Echo("...der Bau der Rakete kostete " + kosten + "M.")

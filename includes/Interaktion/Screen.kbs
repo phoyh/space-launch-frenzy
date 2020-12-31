@@ -1,0 +1,7 @@
+subroutine Interaktion_Screen()
+	cls
+	if maxRunde > 0 then
+		print ".......... Runde " + runde + " von " + maxRunde + " .........."
+		print
+	endif
+endsubroutine

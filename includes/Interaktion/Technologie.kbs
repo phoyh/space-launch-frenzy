@@ -1,6 +1,6 @@
 subroutine Interaktion_Technologie()
 	for spi = 0 to Spieler_Anzahl - 1
-		cls
+		call Interaktion_Screen()
 		print "Technologie " + upper(Spieler_Name$[spi])
 		print "================================="
 		print

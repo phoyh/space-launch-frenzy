@@ -2,7 +2,7 @@ subroutine Interaktion_Raketenbau()
 	for spi = 0 to Spieler_Anzahl - 1
 		gewaehlteOption = -1
 		while gewaehlteOption <> 0 
-			cls
+			call Interaktion_Screen()
 			print "Raketenbau " + upper(Spieler_Name$[spi]) + " - Geld " + Spieler_Geld[spi] + "M"
 			print "==============================="
 			print

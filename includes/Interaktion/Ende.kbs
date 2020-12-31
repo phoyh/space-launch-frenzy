@@ -1,0 +1,8 @@
+subroutine Interaktion_Ende()
+	call Interaktion_Screen()
+	print "SPIELENDE!"
+	print "Aber wer hat gewonnen?"
+	a$ = Technik_Input$("")
+	call Statistik_NimmEndkriterium(ref(statIndex), ref(titel$), ref(platzSpi), ref(platzWertText$))
+	call Interaktion_Quizfrage(ref(titel$), ref(platzSpi), ref(platzWertText$))
+endsubroutine

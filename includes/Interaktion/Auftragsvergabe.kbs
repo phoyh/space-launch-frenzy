@@ -82,7 +82,7 @@ subroutine Interaktion_Auktion(ni)
 end subroutine
 
 subroutine Interaktion_GebotUebersicht(nai, ref(spielerGebotRakete))
-	cls
+	call Interaktion_Screen()
 	print "Nachfrage " + Nachfrageart_Name$[nai]
 	print "====================="
 	print

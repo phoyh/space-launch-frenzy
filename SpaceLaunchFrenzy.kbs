@@ -5,7 +5,7 @@ include "includes/Technik.kbs"
 call Daten_Setup()
 rem call Daten_SetupDummy()
 
-while true
+while maxRunde = -1 or runde < maxRunde
 	runde++
 	call Interaktion_Auftragsvergabe()
 	call Interaktion_Auftragsdurchfuehrung()
@@ -13,3 +13,4 @@ while true
 	call Interaktion_Technologie()
 	call Interaktion_Funding()
 endwhile
+call Interaktion_Ende()

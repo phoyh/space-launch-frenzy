@@ -1,3 +1,16 @@
+subroutine Statistik_NimmEndkriterium(ref(statIndex), ref(titel$), ref(platzSpi), ref(platzWertText$))
+	statIndex = 0
+	redim spielerWert(Spieler_Anzahl)
+	redim spielerWertText$(Spieler_Anzahl)
+	call Statistik_Evaluiere(statIndex, ref(titelMax$), ref(titelMin$), ref(spielerWert), ref(spielerWertText$))
+	titel$ = titelMax$
+	call Technik_Berechnen_Sortierung(ref(spielerWert), ref(platzSpi))
+	redim platzWertText$(Spieler_Anzahl)
+	for pli = 0 to Spieler_Anzahl - 1
+		platzWertText$[pli] = spielerWertText$[platzSpi[pli]]
+	next pli
+endsubroutine
+
 subroutine Statistik_NimmZufaellig(ref(statIndex), ref(titel$), ref(platzSpi), ref(platzWertText$))
 	titel$ = ""
 	redim spielerWert(Spieler_Anzahl)
